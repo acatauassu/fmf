@@ -11,6 +11,7 @@
   --ink:#14213D; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
   --n1:#F1E2C6; --n1-fg:#14213D; --n2:#E4B98A; --n2-fg:#14213D; --n3:#9C4E1C; --n3-fg:#FBF9F4;
   --yes:#1F6F78; --yes-fg:#FBF9F4; --no:#5A6275; --no-fg:#FBF9F4;
+  --right:#1E7B4E; --right-fg:#FFFFFF; --wrong:#B3261E; --wrong-fg:#FFFFFF;
   --font-display:'Libre Baskerville', Georgia, serif; --font-body:'Public Sans', Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark){
@@ -21,6 +22,7 @@
     --ink:#1E2D4F; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
     --n1:#3B3A47; --n1-fg:#F1EDE3; --n2:#7A5A3C; --n2-fg:#F6F3EC; --n3:#E9B872; --n3-fg:#14213D;
     --yes:#7CC4C9; --yes-fg:#0E1630; --no:#9AA6BD; --no-fg:#0E1630;
+  --right:#5BD19A; --right-fg:#0E1630; --wrong:#FF8F85; --wrong-fg:#0E1630;
     color-scheme:dark;
   }
 }
@@ -31,6 +33,7 @@
   --ink:#1E2D4F; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
   --n1:#3B3A47; --n1-fg:#F1EDE3; --n2:#7A5A3C; --n2-fg:#F6F3EC; --n3:#E9B872; --n3-fg:#14213D;
   --yes:#7CC4C9; --yes-fg:#0E1630; --no:#9AA6BD; --no-fg:#0E1630;
+  --right:#5BD19A; --right-fg:#0E1630; --wrong:#FF8F85; --wrong-fg:#0E1630;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -154,11 +157,19 @@ ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 .vote{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .vote label{position:relative;display:flex}
 .vote input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
-.vote span{display:flex;align-items:center;justify-content:center;text-align:center;width:100%;min-height:54px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);font-weight:600;font-size:15px;line-height:1.25}
+.vote span{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;text-align:center;width:100%;min-height:54px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);font-weight:600;font-size:15px;line-height:1.25}
 .vote input:checked+span{background:var(--ink);color:var(--on-ink);border-color:var(--accent)}
 .vote input:checked+span::before{content:"\2713";margin-right:6px;color:var(--amber)}
 .vote input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
 .vote input:disabled{cursor:default}
+.vote span small{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.vote label.right span.opt{background:var(--right);color:var(--right-fg);border-color:var(--right);border-width:2px}
+.vote label.wrong span.opt{background:var(--wrong);color:var(--wrong-fg);border-color:var(--wrong);border-width:2px}
+.vote label.right span.opt::before{content:"\2713";margin-right:6px;color:inherit}
+.vote label.wrong span.opt::before{content:"\2717";margin-right:6px;color:inherit}
+.vote label.right span.opt,.vote label.wrong span.opt{flex-direction:column}
+.card .verdict{border-left-color:var(--right)}
+.card .verdict.bad{border-left-color:var(--wrong)}
 .verdict{display:flex;flex-direction:column;gap:6px;padding:12px 16px;border-radius:8px;background:var(--surface-2);border-left:6px solid var(--teal)}
 .verdict.bad{border-left-color:var(--accent)}
 .verdict p{margin:0}
@@ -791,7 +802,7 @@ function renderH1(){
     const v=S.hoje.cit[c.id], hit=(v===c.v);
     const ver=rev?'<div class="verdict'+(hit?'':' bad')+'"><p><b>'+VLAB[c.v]+'.</b> '+(hit?'A sala acertou.':'A sala marcou “'+esc(VT[v]||'sem voto')+'”.')+'</p><p>'+esc(c.why)+'</p><p class="small">Como conferir: '+esc(c.check)+'</p></div>':'';
     return '<div class="card cit"><span class="small">Citação '+(i+1)+' de 5</span><blockquote class="qt">'+esc(c.q)+'</blockquote><p class="src">'+esc(c.src)+'</p>'+ver+
-      '<div class="vote" role="radiogroup" aria-label="Decisão da sala sobre a citação '+(i+1)+'">'+VOTOS.map(o=>'<label><input type="radio" name="cit-'+c.id+'" data-cit="'+c.id+'" value="'+o.k+'"'+(rev?' disabled':'')+'><span>'+o.t+'</span></label>').join('')+'</div></div>';
+      '<div class="vote" role="radiogroup" aria-label="Decisão da sala sobre a citação '+(i+1)+'">'+VOTOS.map(o=>{ const certa=rev&&o.k===c.v, errada=rev&&o.k===v&&v!==c.v; const cls=certa?' class="right"':(errada?' class="wrong"':''); const selo=certa?'<small>'+(v===c.v?'Gabarito · sala acertou':'Gabarito')+'</small>':(errada?'<small>Marcado pela sala</small>':''); return '<label'+cls+'><input type="radio" name="cit-'+c.id+'" data-cit="'+c.id+'" value="'+o.k+'"'+(rev?' disabled':'')+'><span class="opt">'+o.t+selo+'</span></label>'; }).join('')+'</div></div>';
   }).join('');
   let foot;
   if(!rev){
