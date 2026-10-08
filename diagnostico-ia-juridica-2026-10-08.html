@@ -247,7 +247,8 @@ ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 <div id="rp-host" aria-hidden="true"><div id="relatorio" class="paper"></div></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 (function(){
 'use strict';
@@ -662,6 +663,42 @@ function estadoJSON(){
     resultado:{hoje:{acertosCitacoes:S.hoje.rev?acertos():null,exposicao:{pontos:t.s,respondidas:t.a,nivel:t.nivel}},
     maturidade:{pontos:m.s,respondidas:m.a,nivel:m.a?nivelDe(m.s):null},ranking:C.rows.map(r=>({id:r.id,prioridade:r.prio,onda:r.onda,status:r.st})),plano:{onda1:C.plano[1].map(r=>r.id),onda2:C.plano[2].map(r=>r.id),onda3:C.plano[3].map(r=>r.id)}}},null,2);
 }
+async function relatorioParaPDF(){
+  const J=window.jspdf&&window.jspdf.jsPDF;
+  if(!window.html2canvas||!J)throw new Error('libs');
+  const stage=document.createElement('div');
+  stage.setAttribute('aria-hidden','true');
+  stage.style.cssText='position:absolute;left:-10000px;top:0;width:794px;background:#FFFFFF';
+  const box=$('relatorio').cloneNode(true);
+  box.removeAttribute('id');
+  box.style.cssText='position:relative;width:794px;padding:8px 10px 0;box-sizing:border-box';
+  stage.appendChild(box); document.body.appendChild(stage);
+  const y0=window.scrollY||0;
+  try{ window.scrollTo(0,0); }catch(e){}
+  try{
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    const cortes=Array.from(box.querySelectorAll('.rp-sec')).map(e=>e.offsetTop).filter(v=>v>0);
+    const canvas=await window.html2canvas(box,{scale:2,backgroundColor:'#FFFFFF',useCORS:true,scrollX:0,scrollY:0,windowWidth:794,logging:false});
+    const H=canvas.height/2, mmPx=190/794, paginaPx=Math.floor(273/mmPx);
+    const pdf=new J({unit:'mm',format:'a4',orientation:'portrait'});
+    let ini=0, primeira=true;
+    while(ini<H-1){
+      let fim=Math.min(H,ini+paginaPx);
+      if(fim<H){ const c=cortes.filter(v=>v>ini+120&&v<=fim); if(c.length)fim=c[c.length-1]; }
+      const sy=Math.round(ini*2), sh=Math.max(1,Math.round((fim-ini)*2));
+      const parte=document.createElement('canvas'); parte.width=canvas.width; parte.height=sh;
+      const cx=parte.getContext('2d'); cx.fillStyle='#FFFFFF'; cx.fillRect(0,0,parte.width,sh);
+      cx.drawImage(canvas,0,sy,canvas.width,sh,0,0,canvas.width,sh);
+      if(!primeira)pdf.addPage(); primeira=false;
+      pdf.addImage(parte.toDataURL('image/jpeg',0.92),'JPEG',10,12,190,(fim-ini)*mmPx);
+      ini=fim;
+    }
+    return pdf.output('blob');
+  }finally{
+    stage.remove();
+    try{ window.scrollTo(0,y0); }catch(e){}
+  }
+}
 async function gerarPDF(tipo){
   const cartao=(tipo==='cartao')||(tipo===undefined&&S.modo==='hoje');
   if(cartao)buildCartao(); else buildReport();
@@ -671,10 +708,10 @@ async function gerarPDF(tipo){
     try{ window.print(); }catch(e){ toast('Use Ctrl+P (ou Cmd+P) e escolha Salvar como PDF.'); }
     return;
   }
-  if(!window.html2pdf){ toast('A biblioteca de PDF não carregou. Verifique a conexão e tente de novo.'); return; }
+  if(!window.html2canvas||!(window.jspdf&&window.jspdf.jsPDF)){ toast('A biblioteca de PDF não carregou. Verifique a conexão e tente de novo.'); return; }
   toast('Gerando o PDF…');
   try{
-    const blob=await window.html2pdf().set({margin:[10,10,12,10],image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#FFFFFF',windowWidth:794},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['.rp-sec','tr']}}).from($('relatorio')).outputPdf('blob');
+    const blob=await relatorioParaPDF();
     await dl.save({filename:nomeArq('pdf',cartao?'cartao-30-dias':'diagnostico-ia'),data:blob}); toast('PDF pronto.');
   }catch(e){ if(e&&e.code==='declined')return; toast('Não foi possível gerar o PDF aqui. Baixe o arquivo .html e use Imprimir.'); }
 }
