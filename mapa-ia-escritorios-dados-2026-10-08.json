@@ -1,0 +1,60 @@
+{
+  "versao": "0.1",
+  "data": "2026-10-08",
+  "frentes": {
+    "PRO": {"nome": "Proteger", "d": "Reduz risco: prazo perdido, citação sem lastro, vazamento de dado."},
+    "PRD": {"nome": "Produzir", "d": "Ganha tempo na peça, na pesquisa e na leitura de documentos."},
+    "RET": {"nome": "Reter", "d": "Transforma o saber dos sócios em patrimônio da banca."},
+    "CRE": {"nome": "Crescer", "d": "Melhora a relação com o cliente, a gestão e a captação."}
+  },
+  "dores": [
+    {"id": "P1", "n": "Prazos e publicações", "d": "Intimações chegam por vários canais. Leitura, contagem e agenda dependem de uma pessoa, e um prazo perdido custa caro."},
+    {"id": "P2", "n": "Pesquisa lenta e citação sem lastro", "d": "Cada tese consome horas, e há o risco de citar precedente inexistente ou que não diz o que a peça afirma."},
+    {"id": "P3", "n": "Peças repetitivas, qualidade irregular", "d": "A mesma petição é reescrita do zero e o padrão muda de advogado para advogado."},
+    {"id": "P4", "n": "Conhecimento preso nas pessoas", "d": "Teses, modelos e pareceres ficam em pastas e e-mails. Quem sai leva o saber junto."},
+    {"id": "P5", "n": "Documentos em volume", "d": "Autos, contratos, provas e cálculos exigem leitura integral, e o tempo de leitura aperta o prazo."},
+    {"id": "P6", "n": "Horas, honorários e faturamento", "d": "Lançamento de horas atrasado, cobrança irregular e pouca visibilidade da rentabilidade."},
+    {"id": "P7", "n": "Cliente que quer informação", "d": "\"Como está meu processo?\" ocupa advogados, e os relatórios são feitos à mão."},
+    {"id": "P8", "n": "Sigilo e proteção de dados", "d": "Dados de clientes circulam em ferramentas pessoais ou sem contrato que proíba o treino com eles."},
+    {"id": "P9", "n": "IA sem regra nem registro", "d": "Cada um usa a ferramenta que prefere e ninguém sabe quem conferiu o quê antes de protocolar."},
+    {"id": "P10", "n": "Pressão de preço e de eficiência", "d": "Clientes empresariais comparam bancas, auditam faturas e pedem previsibilidade de custo."},
+    {"id": "P11", "n": "Captação e relacionamento", "d": "Novos clientes dependem de indicação, e a triagem inicial e a presença digital são artesanais."},
+    {"id": "P12", "n": "Gestão e sucessão da banca", "d": "Decisões sem indicadores de carteira, prazo e margem, com forte dependência dos sócios fundadores."}
+  ],
+  "casos": [
+    {"id": "C01", "fr": "PRO", "ext": false, "t": "Mesa de prazos", "ia": "Lê intimações e publicações, conta o prazo, avisa o responsável e deixa uma minuta de providência pronta.", "adv": "Confirma a contagem e assina.", "dr": ["P1"], "i": 4, "e": 2, "m": "Prazos perdidos; tempo entre publicação e distribuição."},
+    {"id": "C02", "fr": "PRO", "ext": false, "t": "Conferência de citações antes de protocolar", "ia": "Extrai toda citação da minuta, localiza na fonte oficial, compara o trecho e emite um relatório de conferência.", "adv": "Lê o inteiro teor e decide o que fica na peça.", "dr": ["P2", "P9"], "i": 5, "e": 2, "m": "Citações não localizadas por peça; tempo de conferência."},
+    {"id": "C03", "fr": "PRO", "ext": false, "t": "Política de uso de IA e registro de conferência", "ia": "Apoia a redação da regra, da lista de ferramentas aprovadas e do modelo de registro.", "adv": "Os sócios aprovam a regra e a cláusula de transparência nos honorários.", "dr": ["P8", "P9"], "i": 4, "e": 1, "m": "% de peças com registro; uso de ferramentas fora da lista."},
+    {"id": "C04", "fr": "PRO", "ext": false, "t": "Anonimização antes do uso de IA", "ia": "Remove nomes, CPFs, valores e endereços de um documento antes de ele ir para a ferramenta.", "adv": "Define o que precisa ser anonimizado em cada tipo de caso.", "dr": ["P8"], "i": 3, "e": 2, "m": "% de documentos tratados; incidentes de dados."},
+    {"id": "C05", "fr": "PRD", "ext": false, "t": "Pesquisa jurisprudencial com fonte", "ia": "Busca no acervo da banca e em repositórios oficiais e entrega cada decisão com link e um mapa de divergências.", "adv": "Escolhe os precedentes e lê o inteiro teor.", "dr": ["P2"], "i": 4, "e": 3, "m": "Horas por tese; taxa de erro de citação."},
+    {"id": "C06", "fr": "PRD", "ext": false, "t": "Primeira minuta a partir do modelo da casa", "ia": "Monta petição inicial, contestação, recurso ou notificação com os fatos aprovados, citando a folha de cada um.", "adv": "Aprova os fatos antes da redação e revisa a peça.", "dr": ["P3"], "i": 5, "e": 3, "m": "Horas até a primeira versão; retrabalho por peça."},
+    {"id": "C07", "fr": "PRD", "ext": false, "t": "Resumo de autos e linha do tempo", "ia": "Resume o processo em ordem cronológica, com remissão à folha de cada fato.", "adv": "Confere os fatos críticos nos autos.", "dr": ["P5", "P3"], "i": 4, "e": 2, "m": "Horas de leitura; fatos corrigidos na revisão."},
+    {"id": "C08", "fr": "PRD", "ext": false, "t": "Revisão de contratos com checklist da banca", "ia": "Aplica o checklist de cláusulas, aponta riscos e cita a cláusula e a página.", "adv": "Decide o que negociar e o que aceitar.", "dr": ["P5", "P3"], "i": 4, "e": 3, "m": "Tempo por contrato; riscos encontrados na revisão do sócio."},
+    {"id": "C09", "fr": "PRD", "ext": false, "t": "Conferência de cálculos trabalhistas e de liquidação", "ia": "Lê a decisão, refaz o cálculo fora do modelo de linguagem e minuta a impugnação.", "adv": "Valida as premissas e assina a impugnação.", "dr": ["P5", "P1"], "i": 4, "e": 3, "m": "Horas por cálculo; diferença encontrada."},
+    {"id": "C10", "fr": "PRD", "ext": false, "t": "Due diligence em lote", "ia": "Lê uma sala de dados inteira e entrega um relatório de pontos de atenção, com a fonte de cada ponto.", "adv": "Prioriza os riscos e conversa com o cliente.", "dr": ["P5", "P10"], "i": 5, "e": 4, "m": "Horas por data room; pontos relevantes descobertos só na revisão."},
+    {"id": "C11", "fr": "PRD", "ext": false, "t": "Preparação de audiência", "ia": "Sugere roteiro de perguntas, pontos fortes e fracos e simula perguntas da parte contrária.", "adv": "Define a estratégia e conduz a audiência.", "dr": ["P3"], "i": 3, "e": 3, "m": "Tempo de preparação; avaliação do advogado após a audiência."},
+    {"id": "C12", "fr": "RET", "ext": false, "t": "Memória da banca", "ia": "Organiza teses, modelos e pareceres aprovados e responde às perguntas da equipe com a fonte interna.", "adv": "Aprova o que entra, com dono, versão e data.", "dr": ["P4", "P2"], "i": 5, "e": 4, "m": "Consultas respondidas com fonte; tempo para achar um modelo."},
+    {"id": "C13", "fr": "RET", "ext": false, "t": "Biblioteca de instruções permanentes", "ia": "Carrega o padrão de redação, de resumo e de conferência da banca em toda conversa com a ferramenta.", "adv": "Revisa e versiona as instruções como qualquer documento da casa.", "dr": ["P3", "P4", "P9"], "i": 4, "e": 2, "m": "% da equipe usando o padrão; variação de qualidade entre peças."},
+    {"id": "C14", "fr": "RET", "ext": false, "t": "Trilha de entrada para associados e estagiários", "ia": "Monta exercícios e estudos de caso a partir de peças aprovadas e modelos da banca.", "adv": "Escolhe os casos e dá o retorno.", "dr": ["P4", "P12"], "i": 3, "e": 2, "m": "Tempo até autonomia do novo advogado."},
+    {"id": "C15", "fr": "CRE", "ext": true, "t": "Relatório periódico ao cliente", "ia": "Gera o andamento de cada processo em linguagem simples, com os pontos de atenção do período.", "adv": "Revisa e envia.", "dr": ["P7", "P10"], "i": 4, "e": 2, "m": "Consultas de andamento recebidas; horas gastas em relatórios."},
+    {"id": "C16", "fr": "CRE", "ext": true, "t": "Demonstrativo de valor para cliente que audita fatura", "ia": "Reúne horas, entregas e resultado em um relatório padronizado por cliente.", "adv": "Valida o texto e a narrativa de valor.", "dr": ["P10", "P6"], "i": 3, "e": 2, "m": "Glosas de fatura; tempo de resposta a auditorias."},
+    {"id": "C17", "fr": "CRE", "ext": false, "t": "Painel de gestão da banca", "ia": "Consolida carteira, prazos, horas e rentabilidade por área e por cliente e responde em linguagem natural.", "adv": "Define os indicadores e decide a partir deles.", "dr": ["P6", "P12"], "i": 4, "e": 3, "m": "Decisões tomadas com dado; fechamento mensal mais rápido."},
+    {"id": "C18", "fr": "CRE", "ext": false, "t": "Pré-lançamento de horas", "ia": "Sugere o lançamento a partir da agenda, dos e-mails e dos documentos do dia.", "adv": "Confirma ou ajusta.", "dr": ["P6"], "i": 3, "e": 2, "m": "Horas lançadas no mesmo dia; faturamento sem atraso."},
+    {"id": "C19", "fr": "CRE", "ext": true, "t": "Triagem de novos clientes", "ia": "Recebe a demanda por formulário, resume o caso e propõe agenda, dentro de uma alçada definida.", "adv": "Aceita ou recusa o caso e fecha o contrato.", "dr": ["P11", "P7"], "i": 3, "e": 2, "m": "Tempo de primeira resposta; taxa de conversão."},
+    {"id": "C20", "fr": "CRE", "ext": true, "t": "Conteúdo jurídico para redes dentro das regras da OAB", "ia": "Escreve o rascunho de um conteúdo informativo a partir de um tema escolhido pelo advogado.", "adv": "Aprova e garante que cumpre as regras de publicidade da advocacia.", "dr": ["P11"], "i": 2, "e": 1, "m": "Publicações por mês; contatos gerados."},
+    {"id": "C21", "fr": "CRE", "ext": false, "t": "Proposta e precificação", "ia": "Cruza histórico de horas e resultados por tipo de causa para sugerir honorários fixos, mistos ou de êxito.", "adv": "Decide o preço e a estratégia comercial.", "dr": ["P10", "P6"], "i": 3, "e": 3, "m": "Margem por tipo de causa; taxa de aprovação de propostas."}
+  ],
+  "regras": {
+    "prioridade": "3 x impacto + soma dos pesos das dores atacadas - 2 x esforco",
+    "peso_dor": "0 = nao pesa, 1 = incomoda, 2 = pesa, 3 = urgente",
+    "ondas": {
+      "1": "esforco <= 2 e impacto >= 3: 0 a 90 dias",
+      "2": "demais casos: 3 a 6 meses",
+      "3": "esforco >= 4: 6 a 12 meses"
+    }
+  },
+  "simulacao_fmf": {
+    "aviso": "ILUSTRATIVO. Pesos hipoteticos para um perfil de banca com contencioso civel e trabalhista e consultivo empresarial. Nao descreve a FMF. Serve para demonstrar o mapa e deve ser refeito com os socios.",
+    "pesos": {"P1": 3, "P2": 3, "P3": 2, "P4": 3, "P5": 2, "P6": 1, "P7": 2, "P8": 3, "P9": 3, "P10": 1, "P11": 0, "P12": 1}
+  }
+}
