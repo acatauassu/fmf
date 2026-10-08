@@ -93,7 +93,26 @@ Peça nota de 0 a 3 para cada dor e anote. As notas alimentam o mapa.
 
 ---
 
-## 5. Decisões e pendências
+## 5. Momento de impacto com a página (10 a 12 min, depois do slide 15)
+
+Arquivo: `diagnostico-ia-juridica-2026-10-08.html`, aberto no seu notebook, na aba **Reunião de hoje**. O diagnóstico completo (12 dores, 21 casos, capacitação) fica na aba **Modo oficina** e não é usado hoje.
+
+1. **Teste das cinco citações (5 min).** Leia cada citação em voz alta e peça a decisão da sala: existe e diz isso, existe mas não diz isso, ou não existe. Marque os cinco votos e clique em Revelar. A frase para fechar: "Nenhuma das cinco dava para validar só olhando." Depois, peça um número de processo real deles e passe no validador CNJ.
+2. **Termômetro (3 min).** Leia as seis perguntas. Sim apenas quando a prática existe hoje. Leia em voz alta a frase "Se o tribunal perguntar amanhã, quem conferiu a citação desta peça?" e o passo único sugerido.
+3. **Devolutiva (2 min).** Clique em Pedir a devolutiva. O Claude escreve a leitura na hora. Se demorar ou falhar, leia a Leitura rápida, que aparece sempre.
+4. **Cartão de 30 dias (2 min).** Preencha a próxima conversa, gere o PDF e combine o envio.
+
+**Antes da reunião:**
+- Confirme o texto da **Súmula 83 do STJ** e a existência e o tema da **Súmula 297 do TST** nos portais oficiais. Não consegui abri-los, e a revelação perde força se alguém achar um erro.
+- A devolutiva ao vivo exige internet, sua conta Claude conectada e um aceite na primeira chamada. Teste no link publicado, com **Ver exemplo**, hoje à noite.
+- O Gerar PDF do arquivo `.html` usa o Imprimir do navegador (Salvar como PDF). No link publicado, ele gera o arquivo direto.
+- Digitar número de processo ou nome de cliente na página não envia nada à IA, mas evite fazê-lo por prudência.
+
+**O que o cartão entrega a eles:** o resultado de hoje, três regras sem custo, as quatro perguntas de conferência e cinco números para medir, com a próxima conversa marcada. É a ponte para a oficina.
+
+---
+
+## 6. Decisões e pendências
 
 1. **Oferta:** de quem é a oficina (WIN, parceiro ou conjunta).
 2. **Marca:** o deck está sem logo. Os Design Books WIN podem ser aplicados depois.

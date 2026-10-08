@@ -144,22 +144,64 @@ ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
+
+.modos{display:flex;flex-wrap:wrap;gap:8px}
+.modo{min-height:44px;padding:8px 20px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);cursor:pointer;font-weight:600}
+.modo[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--accent)}
+.cit{gap:14px}
+.cit .qt{font-family:var(--font-display);font-size:19px;line-height:1.55;border-left:4px solid var(--line-strong);padding:2px 0 2px 16px;margin:0}
+.cit .src{font-size:14px;color:var(--muted)}
+.vote{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vote label{position:relative;display:flex}
+.vote input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.vote span{display:flex;align-items:center;justify-content:center;text-align:center;width:100%;min-height:54px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);font-weight:600;font-size:15px;line-height:1.25}
+.vote input:checked+span{background:var(--ink);color:var(--on-ink);border-color:var(--accent)}
+.vote input:checked+span::before{content:"\2713";margin-right:6px;color:var(--amber)}
+.vote input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.vote input:disabled{cursor:default}
+.verdict{display:flex;flex-direction:column;gap:6px;padding:12px 16px;border-radius:8px;background:var(--surface-2);border-left:6px solid var(--teal)}
+.verdict.bad{border-left-color:var(--accent)}
+.verdict p{margin:0}
+.verdict .small{margin:0}
+.summary .big2{font-family:var(--font-display);font-size:20px;line-height:1.35;font-weight:700;color:var(--on-ink)}
+.summary .pips{display:flex;gap:4px;margin-top:6px}
+.summary .pips i{flex:1;height:12px;border-radius:3px;background:transparent;border:1px solid var(--on-ink-soft)}
+.summary .pips i.on{background:var(--amber);border-color:var(--amber)}
+.stat{font-family:var(--font-display);font-size:30px;font-weight:700;line-height:1.2}
+.ai-box{white-space:pre-wrap;line-height:1.65;background:var(--bg);border:1px solid var(--line-strong);border-radius:10px;padding:18px;min-height:110px}
+.cnjres{font-weight:600}
+.cnjres.ok{color:var(--teal)}
+.cnjres.bad{color:var(--accent)}
+.paper .ct-regra{display:flex;gap:12px;margin:0 0 9px}
+.paper .ct-n{font-family:var(--font-display);font-size:24px;color:#9C4E1C;line-height:1;min-width:20px}
+.paper .ct-regra p{margin:0 0 2px}
+.paper .ct-pri{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#9C4E1C;color:#FFFFFF;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.paper .ct-q{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.paper .ct-q div{border:1px solid #B3AB97;padding:8px 10px;border-radius:6px}
+.paper .ct-q b{display:block;font-size:14px;color:#14213D}
+.paper td.blank{height:30px}
+#h4-preview{width:100%;max-width:794px;margin-inline:auto;padding:clamp(18px,4vw,32px);border:1px solid var(--line-strong);border-radius:10px;font-size:15px}
+#h4-preview h1{font-size:30px}
+#h4-preview table{font-size:14px}
+@media (max-width:560px){.vote{grid-template-columns:1fr}.paper .ct-q{grid-template-columns:repeat(2,1fr)}}
+
 /* Relatório: papel claro fixo, usado no PDF */
 #rp-host{position:fixed;left:-10000px;top:0;width:794px;pointer-events:none}
-#relatorio{background:#FFFFFF;color:#14213D;font-family:var(--font-body);font-size:12.5px;line-height:1.45;width:794px;padding:8px 10px 0}
-#relatorio h1{font-size:24px;margin:2px 0 4px;color:#14213D}
-#relatorio h2{font-size:15px;margin:0 0 6px;color:#9C4E1C;font-family:var(--font-body);text-transform:uppercase;letter-spacing:.08em}
-#relatorio h3{font-size:13px;margin:8px 0 3px;font-family:var(--font-body)}
-#relatorio .rp-sec{margin:0 0 14px;break-inside:avoid;page-break-inside:avoid}
-#relatorio .rp-meta{color:#3F4A5E;margin:0 0 10px}
-#relatorio .rp-ex{border:1px dashed #9C4E1C;padding:6px 10px;margin:0 0 10px;color:#9C4E1C;font-weight:600}
-#relatorio table{width:100%;font-size:11.5px;border:0}
-#relatorio th{background:#EDE8DC;color:#3F4A5E;font-size:10.5px;padding:5px 7px;border-bottom:1px solid #B3AB97}
-#relatorio td{padding:5px 7px;border-bottom:1px solid #D9D3C5;color:#14213D}
-#relatorio .rp-two{display:flex;gap:16px}
-#relatorio .rp-two>div{flex:1;min-width:0}
-#relatorio ul,#relatorio ol{margin:2px 0 0;padding-left:18px}
-#relatorio .rp-foot{margin-top:10px;color:#5A6275;font-size:10.5px;border-top:1px solid #D9D3C5;padding-top:6px}
+.paper{background:#FFFFFF;color:#14213D;font-family:var(--font-body);font-size:12.5px;line-height:1.45}
+#relatorio{width:794px;padding:8px 10px 0}
+.paper h1{font-size:24px;margin:2px 0 4px;color:#14213D}
+.paper h2{font-size:15px;margin:0 0 6px;color:#9C4E1C;font-family:var(--font-body);text-transform:uppercase;letter-spacing:.08em}
+.paper h3{font-size:13px;margin:8px 0 3px;font-family:var(--font-body)}
+.paper .rp-sec{margin:0 0 14px;break-inside:avoid;page-break-inside:avoid}
+.paper .rp-meta{color:#3F4A5E;margin:0 0 10px}
+.paper .rp-ex{border:1px dashed #9C4E1C;padding:6px 10px;margin:0 0 10px;color:#9C4E1C;font-weight:600}
+.paper table{width:100%;font-size:11.5px;border:0}
+.paper th{background:#EDE8DC;color:#3F4A5E;font-size:10.5px;padding:5px 7px;border-bottom:1px solid #B3AB97}
+.paper td{padding:5px 7px;border-bottom:1px solid #D9D3C5;color:#14213D}
+.paper .rp-two{display:flex;gap:16px}
+.paper .rp-two>div{flex:1;min-width:0}
+.paper ul,.paper ol{margin:2px 0 0;padding-left:18px}
+.paper .rp-foot{margin-top:10px;color:#5A6275;font-size:10.5px;border-top:1px solid #D9D3C5;padding-top:6px}
 @media print{
   @page{size:A4;margin:14mm}
   body{background:#FFFFFF !important;padding:0 !important}
@@ -174,7 +216,7 @@ ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
     <div class="ttl">
       <p class="eyebrow">Mapa de IA para escritórios</p>
       <h1>Diagnóstico de IA jurídica</h1>
-      <p class="sub">Preenchimento ao vivo com os sócios, de cima para baixo. As respostas ficam salvas neste navegador.</p>
+      <p class="sub">Quatro momentos para a reunião de hoje. O diagnóstico completo fica guardado no Modo oficina. As respostas ficam salvas neste navegador.</p>
     </div>
     <div class="tools" role="group" aria-label="Ações">
       <button class="btn" id="b-exemplo" type="button">Ver exemplo</button>
@@ -187,11 +229,22 @@ ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
   </header>
   <p class="status" id="status" role="status"></p>
   <p class="banner" id="ex-banner" hidden>Exemplo ilustrativo. As notas são hipóteses e não descrevem nenhum escritório. Use Novo diagnóstico para começar do zero.</p>
-  <nav class="steps" id="steps" aria-label="Etapas do diagnóstico"></nav>
-  <main id="panels"></main>
+  <div class="modos" role="group" aria-label="Modo da página">
+    <button class="modo" id="tab-hoje" type="button" data-modo="hoje" aria-pressed="true">Reunião de hoje</button>
+    <button class="modo" id="tab-oficina" type="button" data-modo="oficina" aria-pressed="false">Modo oficina</button>
+  </div>
+  <div id="mod-hoje" class="panel">
+    <div class="card"><div class="field"><label for="h-firma">Escritório</label><input type="text" id="h-firma" data-bind="perfil.firma" placeholder="Nome do escritório" autocomplete="off"></div></div>
+    <nav class="steps" id="hsteps" aria-label="Etapas da reunião de hoje"></nav>
+    <main id="hpanels"></main>
+  </div>
+  <div id="mod-oficina" class="panel" hidden>
+    <nav class="steps" id="steps" aria-label="Etapas do diagnóstico completo"></nav>
+    <main id="panels"></main>
+  </div>
   <p class="note">Diagnóstico declaratório, feito a partir das respostas dos sócios. Impacto e esforço dos casos são estimativas iniciais e devem ser calibrados com dados reais.</p>
 </div>
-<div id="rp-host" aria-hidden="true"><div id="relatorio"></div></div>
+<div id="rp-host" aria-hidden="true"><div id="relatorio" class="paper"></div></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -256,6 +309,39 @@ const BASE=[
  {id:'b5',t:'Retrabalho por peça (revisões pedidas pelo sócio)'}
 ];
 const KEY='mapaIA.diagnostico.v1';
+const HSTEPS=['Teste das citações','Termômetro','Devolutiva','Cartão de 30 dias'];
+const VOTOS=[{k:'ok',t:'Existe e diz isso'},{k:'dist',t:'Existe, mas não diz isso'},{k:'inex',t:'Não existe'}];
+const VT={ok:'Existe e diz isso',dist:'Existe, mas não diz isso',inex:'Não existe'};
+const VLAB={ok:'Correta',dist:'Distorcida',inex:'Inexistente'};
+const CIT=[
+ {id:'c1',q:'«Não se conhece do recurso especial pela divergência, quando a orientação do tribunal se firmou no mesmo sentido da decisão recorrida.»',src:'STJ, Súmula 83',v:'ok',tipo:'súmula real, com o texto correto',why:'Súmula real do STJ, transcrita corretamente.',check:'Portal do STJ, página de súmulas.'},
+ {id:'c2',q:'A Súmula 297 do TST dispensa o prequestionamento nos recursos de revista.',src:'TST, Súmula 297',v:'dist',tipo:'súmula real, com o conteúdo distorcido',why:'A súmula existe, mas trata de como se configura o prequestionamento. Ela não o dispensa.',check:'Portal do TST: leia o texto inteiro da súmula, não o resumo que a IA entregou.'},
+ {id:'c3',q:'«Nas relações de consumo, a inversão do ônus da prova é automática e dispensa decisão fundamentada.»',src:'STJ, REsp 9.999.999/SP, Rel. Min. (nome omitido), Terceira Turma, DJe 14/03/2024',v:'inex',tipo:'recurso especial com número impossível',why:'Não existe. O STJ não chegou a um REsp com esse número. A ementa foi escrita para parecer real: tese plausível, turma e data.',check:'Pesquisa de jurisprudência do STJ, pelo número do processo.'},
+ {id:'c4',q:'Como ensina a doutrina, «a má-fé processual exige prova do dolo específico em todas as hipóteses legais».',src:'TABAJARA QUARESMA, Ermelindo. Curso de Processo Civil, 12ª ed., p. 1.204',v:'inex',tipo:'doutrina inventada',why:'Autor, obra e página foram inventados para este exercício. É assim que doutrina fabricada costuma aparecer: nome, edição e página, com aparência de rigor.',check:'Só a obra, física ou digital e licenciada, na edição e na página citadas, encerra a dúvida.'},
+ {id:'c5',q:'«O atraso reiterado no pagamento de salários gera dano moral presumido.»',src:'TRT-8, RO 0000123-47.2023.5.08.0001, 2ª Turma',v:'inex',tipo:'número de processo com dígitos inválidos',why:'Não existe. Os dígitos verificadores do número não fecham, então esse número de processo é impossível. O validador abaixo mostra isso em um segundo.',check:'Validador do número único do CNJ e consulta processual no site do tribunal.'}
+];
+const TERM=[
+ {id:'t1',t:'Existe uma regra escrita sobre o uso de IA, e todos a conhecem.'},
+ {id:'t2',t:'Toda citação que sai do escritório é conferida na fonte oficial antes de protocolar.'},
+ {id:'t3',t:'Dá para provar, depois, quem conferiu cada citação e quando.'},
+ {id:'t4',t:'Dados de clientes só circulam em ferramentas aprovadas, com contrato que proíbe o treino com esses dados.'},
+ {id:'t5',t:'Estagiários e associados usam IA com orientação do escritório, não por conta própria.'},
+ {id:'t6',t:'Os clientes sabem que o escritório usa IA e que há revisão por advogado.'}
+];
+const PROX={
+ t2:'Tornar obrigatória a conferência na fonte oficial antes de protocolar, começando pelas peças dirigidas a tribunais.',
+ t3:'Criar o registro de conferência: quem conferiu, quando e em qual fonte, anexado a cada peça.',
+ t4:'Listar as ferramentas aprovadas e proibir dados de clientes fora delas.',
+ t1:'Escrever uma regra de uma página sobre o uso de IA e apresentá-la a toda a equipe.',
+ t5:'Combinar com a equipe o que pode e o que não pode ser feito com IA, com exemplos do dia a dia.',
+ t6:'Incluir no contrato de honorários uma cláusula de transparência sobre o uso de IA.'
+};
+const REGRAS=[
+ {t:'Nenhuma citação sai sem registro de conferência.',d:'Anotar quem conferiu, quando e em qual fonte oficial. O registro acompanha a peça.',ts:['t2','t3']},
+ {t:'Uma lista curta de ferramentas aprovadas.',d:'Dados de clientes só circulam nelas, com contrato que proíbe o treino com esses dados. Combinar com a equipe o que pode e o que não pode.',ts:['t1','t4','t5']},
+ {t:'Medir por quatro semanas e informar os clientes.',d:'Registrar horas por pesquisa e citações não localizadas por peça. Incluir no contrato de honorários a transparência sobre o uso de IA e a revisão por advogado.',ts:['t6']}
+];
+const JNOMES={'1':'STF','2':'CNJ','3':'STJ','4':'Justiça Federal','5':'Justiça do Trabalho','6':'Justiça Eleitoral','7':'Justiça Militar da União','8':'Justiça dos Estados e do DF','9':'Justiça Militar Estadual'};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -264,7 +350,7 @@ const fmtData=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m
 const slug=s=>(String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''))||'escritorio';
 const idNum=id=>parseInt(String(id).replace(/\D/g,''),10)||0;
 
-const blank=()=>({v:1,step:1,exemplo:false,
+const blank=()=>({v:1,step:1,exemplo:false,modo:'hoje',hstep:1,hoje:{cit:{},rev:false,term:{},ai:''},
  perfil:{firma:'',participantes:'',data:hoje(),areas:[],pessoas:{socios:'',assoc:'',estag:'',apoio:''},ferramentas:[],quemUsa:'',usos:[]},
  mat:{},notas:{},coment:{},casos:{},horas:{},baseline:{},fecho:{piloto:'',resp:'',proxima:'',obs:''}});
 function merge(a,b){ if(b==null||typeof b!=='object'||Array.isArray(b))return a; Object.keys(b).forEach(k=>{ if(a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k])&&typeof b[k]==='object'&&!Array.isArray(b[k])) merge(a[k],b[k]); else a[k]=b[k]; }); return a; }
@@ -460,13 +546,36 @@ function progresso(i){
   if(i===4)return 'Calculado';
   return 'Esboço';
 }
+const acertos=()=>CIT.filter(c=>S.hoje.cit[c.id]===c.v).length;
+function termo(){
+  let s=0,a=0; TERM.forEach(x=>{ const v=S.hoje.term[x.id]; if(typeof v==='boolean'){a++; if(v)s++;} });
+  const t=S.hoje.term;
+  const nivel=a<TERM.length?'Em aberto':(s<=2?'Alta':(s<=4?'Média':'Baixa'));
+  let prova=null;
+  if(t.t2===true&&t.t3===true)prova='Conferem e conseguem provar.';
+  else if(t.t2===true&&t.t3===false)prova='Conferem, mas não conseguem provar que conferiram.';
+  else if(t.t2===false)prova='Hoje a conferência depende de cada pessoa e não deixa rastro.';
+  let prox=null;
+  ['t2','t3','t4','t1','t5','t6'].some(k=>{ if(t[k]===false){prox=PROX[k];return true;} return false; });
+  if(!prox&&a===TERM.length)prox='Medir por quatro semanas as horas e os erros, e revisar a regra a cada trimestre.';
+  return {s:s,a:a,nivel:nivel,prova:prova,prox:prox};
+}
+function hprog(i){
+  if(i===1)return S.hoje.rev?acertos()+' de 5 acertos':Object.keys(S.hoje.cit).length+' de 5 votos';
+  if(i===2)return termo().a+' de 6';
+  if(i===3)return S.hoje.ai?'Escrita':'Pendente';
+  return S.fecho.proxima?'Combinado':'Para levar';
+}
 function updateSteps(){
+  $('hsteps').innerHTML=HSTEPS.map((n,i)=>'<button type="button" class="step" data-hstep-go="'+(i+1)+'"'+(S.hstep===i+1?' aria-current="step"':'')+'><span class="nm">'+(i+1)+'. '+n+'</span><span class="pg">'+hprog(i+1)+'</span></button>').join('');
   $('steps').innerHTML=STEPS.map((n,i)=>'<button type="button" class="step" data-step-go="'+(i+1)+'"'+(S.step===i+1?' aria-current="step"':'')+'><span class="nm">'+(i+1)+'. '+n+'</span><span class="pg">'+progresso(i+1)+'</span></button>').join('');
   const mp=$('mat-prog'); if(mp)mp.textContent=matScore().a+' de 8 afirmações respondidas.';
   const dp=$('dor-prog'); if(dp)dp.textContent=Object.keys(S.notas).length+' de 12 dores avaliadas.';
   $('ex-banner').hidden=!S.exemplo;
-  const pristine=!S.exemplo&&!S.perfil.firma&&!Object.keys(S.notas).length&&!Object.keys(S.mat).length;
+  const pristine=!S.exemplo&&!S.perfil.firma&&!Object.keys(S.notas).length&&!Object.keys(S.mat).length&&!Object.keys(S.hoje.cit).length&&!Object.keys(S.hoje.term).length;
   $('b-exemplo').hidden=!pristine;
+  $('tab-hoje').setAttribute('aria-pressed',String(S.modo==='hoje'));
+  $('tab-oficina').setAttribute('aria-pressed',String(S.modo==='oficina'));
 }
 function go(n){
   n=Math.max(1,Math.min(5,n)); S.step=n;
@@ -483,17 +592,22 @@ function hydrate(){
   document.querySelectorAll('[data-nota]').forEach(el=>{ el.checked=(S.notas[el.dataset.nota]===Number(el.value)); });
   document.querySelectorAll('[data-mat]').forEach(el=>{ const v=S.mat[el.dataset.mat]; el.checked=(typeof v==='boolean')&&((v?'1':'0')===el.value); });
   document.querySelectorAll('[data-coment]').forEach(el=>{ el.value=S.coment[el.dataset.coment]||''; });
+  document.querySelectorAll('[data-cit]').forEach(el=>{ el.checked=(S.hoje.cit[el.dataset.cit]===el.value); });
+  document.querySelectorAll('[data-term]').forEach(el=>{ const v=S.hoje.term[el.dataset.term]; el.checked=(typeof v==='boolean')&&((v?'1':'0')===el.value); });
 }
 function onEdit(e){
-  const t=e.target; if(!t||!t.dataset)return; let changed=false;
-  if(t.dataset.bind!==undefined){ if(t.type==='radio'&&!t.checked)return; setPath(t.dataset.bind,t.value); changed=true; }
-  else if(t.dataset.arr!==undefined){ const a=(getPath(t.dataset.arr)||[]).slice(); const i=a.indexOf(t.value); if(t.checked&&i<0)a.push(t.value); if(!t.checked&&i>=0)a.splice(i,1); setPath(t.dataset.arr,a); changed=true; }
-  else if(t.dataset.nota!==undefined){ if(t.checked){ S.notas[t.dataset.nota]=Number(t.value); changed=true; } }
-  else if(t.dataset.mat!==undefined){ if(t.checked){ S.mat[t.dataset.mat]=(t.value==='1'); changed=true; } }
-  else if(t.dataset.coment!==undefined){ S.coment[t.dataset.coment]=t.value; changed=true; }
-  else if(t.dataset.hora!==undefined){ const v=parseFloat(t.value); if(isFinite(v)&&v>=0)S.horas[t.dataset.hora]=v; else delete S.horas[t.dataset.hora]; changed=true; updateTotals(); }
-  else if(t.dataset.caso!==undefined){ S.casos[t.dataset.caso]=t.value; changed=true; renderResultado(t.dataset.caso); }
-  if(changed){ save(); updateSteps(); if(S.step===5&&t.dataset.bind&&t.dataset.bind.indexOf('perfil.pessoas')===0)updateTotals(); }
+  const t=e.target; if(!t||!t.dataset)return; let changed=false; const d=t.dataset;
+  if(d.bind!==undefined){ if(t.type==='radio'&&!t.checked)return; setPath(d.bind,t.value); changed=true; if(S.modo==='hoje'&&S.hstep===4&&d.bind.indexOf('fecho.')===0)renderPreview(); }
+  else if(d.arr!==undefined){ const a=(getPath(d.arr)||[]).slice(); const i=a.indexOf(t.value); if(t.checked&&i<0)a.push(t.value); if(!t.checked&&i>=0)a.splice(i,1); setPath(d.arr,a); changed=true; }
+  else if(d.nota!==undefined){ if(t.checked){ S.notas[d.nota]=Number(t.value); changed=true; } }
+  else if(d.mat!==undefined){ if(t.checked){ S.mat[d.mat]=(t.value==='1'); changed=true; } }
+  else if(d.coment!==undefined){ S.coment[d.coment]=t.value; changed=true; }
+  else if(d.hora!==undefined){ const v=parseFloat(t.value); if(isFinite(v)&&v>=0)S.horas[d.hora]=v; else delete S.horas[d.hora]; changed=true; updateTotals(); }
+  else if(d.caso!==undefined){ S.casos[d.caso]=t.value; changed=true; renderResultado(d.caso); }
+  else if(d.cit!==undefined){ if(t.checked){ S.hoje.cit[d.cit]=t.value; changed=true; updateVote(); } }
+  else if(d.term!==undefined){ if(t.checked){ S.hoje.term[d.term]=(t.value==='1'); changed=true; renderMeter(); } }
+  else if(d.cnj!==undefined){ renderCNJ(t.value); }
+  if(changed){ save(); updateSteps(); if(S.step===5&&d.bind&&d.bind.indexOf('perfil.pessoas')===0)updateTotals(); }
 }
 
 /* ---------- avisos ---------- */
@@ -533,7 +647,7 @@ function getDownloads(){
   if(!dlP)dlP=Promise.resolve().then(()=>window.claude.use('downloads')).catch(()=>null);
   return dlP;
 }
-const nomeArq=ext=>'diagnostico-ia-'+slug(S.perfil.firma)+'-'+(S.perfil.data||hoje())+'.'+ext;
+const nomeArq=(ext,pre)=>(pre||'diagnostico-ia')+'-'+slug(S.perfil.firma)+'-'+(S.perfil.data||hoje())+'.'+ext;
 async function entregar(filename,data,mime){
   const dl=await getDownloads();
   if(dl){ try{ await dl.save({filename:filename,data:data}); toast('Arquivo pronto.'); }catch(e){ if(e&&e.code==='declined')return; toast('Não foi possível salvar o arquivo aqui.'); } return; }
@@ -543,12 +657,14 @@ async function entregar(filename,data,mime){
   setTimeout(()=>URL.revokeObjectURL(url),4000); toast('Arquivo baixado.');
 }
 function estadoJSON(){
-  const C=calc(), m=matScore();
-  return JSON.stringify({app:'mapa-ia-escritorios',versao:'0.1',exportadoEm:new Date().toISOString(),estado:S,
-    resultado:{maturidade:{pontos:m.s,respondidas:m.a,nivel:m.a?nivelDe(m.s):null},ranking:C.rows.map(r=>({id:r.id,prioridade:r.prio,onda:r.onda,status:r.st})),plano:{onda1:C.plano[1].map(r=>r.id),onda2:C.plano[2].map(r=>r.id),onda3:C.plano[3].map(r=>r.id)}}},null,2);
+  const C=calc(), m=matScore(), t=termo();
+  return JSON.stringify({app:'mapa-ia-escritorios',versao:'0.2',exportadoEm:new Date().toISOString(),estado:S,
+    resultado:{hoje:{acertosCitacoes:S.hoje.rev?acertos():null,exposicao:{pontos:t.s,respondidas:t.a,nivel:t.nivel}},
+    maturidade:{pontos:m.s,respondidas:m.a,nivel:m.a?nivelDe(m.s):null},ranking:C.rows.map(r=>({id:r.id,prioridade:r.prio,onda:r.onda,status:r.st})),plano:{onda1:C.plano[1].map(r=>r.id),onda2:C.plano[2].map(r=>r.id),onda3:C.plano[3].map(r=>r.id)}}},null,2);
 }
-async function gerarPDF(){
-  buildReport();
+async function gerarPDF(tipo){
+  const cartao=(tipo==='cartao')||(tipo===undefined&&S.modo==='hoje');
+  if(cartao)buildCartao(); else buildReport();
   const dl=await getDownloads();
   if(!dl){
     if(window.claude){ toast('O PDF não está disponível nesta visualização. Abra o arquivo .html no navegador.'); return; }
@@ -559,7 +675,7 @@ async function gerarPDF(){
   toast('Gerando o PDF…');
   try{
     const blob=await window.html2pdf().set({margin:[10,10,12,10],image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#FFFFFF',windowWidth:794},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['.rp-sec','tr']}}).from($('relatorio')).outputPdf('blob');
-    await dl.save({filename:nomeArq('pdf'),data:blob}); toast('PDF pronto.');
+    await dl.save({filename:nomeArq('pdf',cartao?'cartao-30-dias':'diagnostico-ia'),data:blob}); toast('PDF pronto.');
   }catch(e){ if(e&&e.code==='declined')return; toast('Não foi possível gerar o PDF aqui. Baixe o arquivo .html e use Imprimir.'); }
 }
 function resumoTexto(){
@@ -571,15 +687,15 @@ function resumoTexto(){
   L.push('Área piloto: '+(S.fecho.piloto||'a definir'));
   return L.join('\n');
 }
-function copiar(){
-  const txt=resumoTexto();
-  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:0'; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); toast(ok?'Resumo copiado.':'Não foi possível copiar. Use Salvar respostas.'); };
-  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('Resumo copiado.'),fallback); } else fallback();
+function copiarTexto(txt,okMsg){
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:0'; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); toast(ok?okMsg:'Não foi possível copiar. Use Salvar respostas.'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast(okMsg),fallback); } else fallback();
 }
+function copiar(){ if(S.modo==='hoje')copiarTexto(fichaTexto(),'Ficha copiada.'); else copiarTexto(resumoTexto(),'Resumo copiado.'); }
 function abrirArquivo(file){
   if(!file)return;
   const rd=new FileReader();
-  rd.onload=()=>{ try{ const j=JSON.parse(String(rd.result)); if(!j||j.app!=='mapa-ia-escritorios'||typeof j.estado!=='object')throw new Error('x'); S=merge(blank(),j.estado); hydrate(); save(); go(S.step||1); toast('Respostas carregadas.'); }catch(e){ toast('Este arquivo não é um diagnóstico salvo por esta ferramenta.'); } };
+  rd.onload=()=>{ try{ const j=JSON.parse(String(rd.result)); if(!j||j.app!=='mapa-ia-escritorios'||typeof j.estado!=='object')throw new Error('x'); S=merge(blank(),j.estado); hydrate(); save(); setModo(S.modo||'hoje'); toast('Respostas carregadas.'); }catch(e){ toast('Este arquivo não é um diagnóstico salvo por esta ferramenta.'); } };
   rd.onerror=()=>toast('Não foi possível ler o arquivo.');
   rd.readAsText(file);
 }
@@ -590,37 +706,244 @@ function exemplo(){
   S.perfil.ferramentas=['ChatGPT']; S.perfil.quemUsa='Poucos'; S.perfil.usos=['Pesquisa jurídica','Minutas e peças'];
   ['m1','m2','m3','m4','m5','m6','m7','m8'].forEach((k,i)=>{ S.mat[k]=(i===2); });
   const n={P1:3,P2:3,P3:2,P4:3,P5:2,P6:1,P7:2,P8:3,P9:3,P10:1,P11:0,P12:1}; Object.keys(n).forEach(k=>{S.notas[k]=n[k];});
-  hydrate(); save(); go(4);
+  S.hoje.cit={c1:'ok',c2:'ok',c3:'inex',c4:'inex',c5:'ok'}; S.hoje.rev=true;
+  S.hoje.term={t1:false,t2:true,t3:false,t4:false,t5:false,t6:false};
+  S.fecho.proxima='A combinar (exemplo)';
+  hydrate(); save(); setModo('hoje');
 }
 let novoT=null;
 function novo(){
   const b=$('b-novo');
   if(!novoT){ b.textContent='Apagar tudo? Clique de novo'; b.classList.add('warn'); novoT=setTimeout(()=>{ novoT=null; b.textContent='Novo diagnóstico'; b.classList.remove('warn'); },5000); return; }
   clearTimeout(novoT); novoT=null; b.textContent='Novo diagnóstico'; b.classList.remove('warn');
-  S=blank(); hydrate(); save(); go(1); toast('Diagnóstico novo, em branco.');
+  S=blank(); hydrate(); save(); setModo('hoje'); toast('Diagnóstico novo, em branco.');
+}
+
+/* ---------- reunião de hoje ---------- */
+function hpanel1(){
+  return '<section class="panel" data-hstep="1" aria-labelledby="hh1"><div class="head"><h2 id="hh1">Teste das cinco citações</h2><p class="lead">Esta minuta foi escrita por uma IA e traz cinco citações. Decidam em voz alta e marquem a decisão da sala em cada uma. Depois, revelem.</p><p class="small">Exercício montado para esta reunião: algumas citações são reais e outras não.</p></div>'+
+  '<div id="h1-body" class="panel"></div>'+
+  '<div class="pager"><span></span><button class="btn primary" type="button" data-hgo="1">Termômetro</button></div></section>';
+}
+function hpanel2(){
+  const rows=TERM.map(x=>'<div class="mq" role="group" aria-labelledby="tq-'+x.id+'"><p id="tq-'+x.id+'">'+esc(x.t)+'</p><div class="yn"><label><input type="radio" name="term-'+x.id+'" data-term="'+x.id+'" value="1"><span class="y">Sim</span></label><label><input type="radio" name="term-'+x.id+'" data-term="'+x.id+'" value="0"><span class="n">Não</span></label></div></div>').join('');
+  return '<section class="panel" data-hstep="2" aria-labelledby="hh2" hidden><div class="head"><h2 id="hh2">Termômetro de exposição</h2><p class="lead">Seis perguntas, sim ou não. Respondam pelo que acontece hoje, não pelo que está previsto.</p></div>'+
+  '<div class="card mgrp"><div>'+rows+'</div></div><div id="meter"></div>'+
+  '<div class="pager"><button class="btn" type="button" data-hgo="-1">Voltar</button><button class="btn primary" type="button" data-hgo="1">Devolutiva</button></div></section>';
+}
+function hpanel3(){
+  return '<section class="panel" data-hstep="3" aria-labelledby="hh3" hidden><div class="head"><h2 id="hh3">Devolutiva</h2><p class="lead">O que a sala viu e o que fazer nos próximos 30 dias.</p></div>'+
+  '<div id="h3-body" class="panel"></div>'+
+  '<div class="pager"><button class="btn" type="button" data-hgo="-1">Voltar</button><button class="btn primary" type="button" data-hgo="1">Cartão de 30 dias</button></div></section>';
+}
+function hpanel4(){
+  return '<section class="panel" data-hstep="4" aria-labelledby="hh4" hidden><div class="head"><h2 id="hh4">Cartão de 30 dias</h2><p class="lead">Para levar: o resultado de hoje, três regras sem custo e cinco números para começar a medir.</p></div>'+
+  '<div class="card"><div class="grid"><div class="field"><label for="h-resp">Responsável no escritório</label><input type="text" id="h-resp" data-bind="fecho.resp" autocomplete="off"></div><div class="field"><label for="h-prox">Próxima conversa</label><input type="text" id="h-prox" data-bind="fecho.proxima" placeholder="Data e horário" autocomplete="off"></div></div></div>'+
+  '<div class="paper" id="h4-preview"></div>'+
+  '<div class="card"><div class="tools"><button class="btn primary" type="button" data-act="pdf-cartao">Gerar PDF do cartão</button><button class="btn" type="button" data-act="copy">Copiar resumo</button><button class="btn" type="button" data-act="json">Salvar respostas</button></div></div>'+
+  '<div class="pager"><button class="btn" type="button" data-hgo="-1">Voltar</button><span></span></div></section>';
+}
+function placarTexto(a){
+  if(a===5)return 'A sala acertou as cinco. Com a fonte oficial aberta ou de memória? Em uma peça com 30 citações, a memória não escala.';
+  if(a>=3)return 'A sala acertou '+a+'. Cada erro seria uma citação protocolada sem lastro.';
+  return 'A sala acertou '+a+'. Nenhuma das cinco dava para validar só olhando.';
+}
+function renderH1(){
+  const rev=S.hoje.rev;
+  const cards=CIT.map((c,i)=>{
+    const v=S.hoje.cit[c.id], hit=(v===c.v);
+    const ver=rev?'<div class="verdict'+(hit?'':' bad')+'"><p><b>'+VLAB[c.v]+'.</b> '+(hit?'A sala acertou.':'A sala marcou “'+esc(VT[v]||'sem voto')+'”.')+'</p><p>'+esc(c.why)+'</p><p class="small">Como conferir: '+esc(c.check)+'</p></div>':'';
+    return '<div class="card cit"><span class="small">Citação '+(i+1)+' de 5</span><blockquote class="qt">'+esc(c.q)+'</blockquote><p class="src">'+esc(c.src)+'</p>'+ver+
+      '<div class="vote" role="radiogroup" aria-label="Decisão da sala sobre a citação '+(i+1)+'">'+VOTOS.map(o=>'<label><input type="radio" name="cit-'+c.id+'" data-cit="'+c.id+'" value="'+o.k+'"'+(rev?' disabled':'')+'><span>'+o.t+'</span></label>').join('')+'</div></div>';
+  }).join('');
+  let foot;
+  if(!rev){
+    foot='<div class="card"><p class="small" id="vote-count"></p><div class="tools"><button class="btn primary" type="button" id="b-revelar" data-act="revelar">Revelar o gabarito</button></div></div>';
+  }else{
+    const a=acertos();
+    foot='<div class="card summary"><div class="col"><h3>Placar da sala</h3><p class="big">'+a+' de 5</p><p>'+esc(placarTexto(a))+'</p></div><div class="col"><h3>O que separa as cinco</h3><p>A conferência na fonte oficial. Um protocolo garante que ela aconteça em toda peça e que deixe registro.</p></div></div>'+
+      '<div class="card"><h3>Validador de número CNJ</h3><p class="small">O número único do processo tem dois dígitos calculados a partir dos demais. Número inventado costuma falhar. O que você digitar fica só nesta tela.</p><div class="field"><label for="cnj-in">Número do processo</label><input type="text" id="cnj-in" data-cnj="1" inputmode="numeric" placeholder="0000000-00.0000.0.00.0000" autocomplete="off"></div><div class="tools"><button class="btn" type="button" data-act="cnj5">Testar o número da citação 5</button></div><p class="cnjres" id="cnj-out" aria-live="polite"></p></div>'+
+      '<div><button class="btn ghost" type="button" data-act="refazer">Refazer o teste</button></div>';
+  }
+  $('h1-body').innerHTML=cards+foot;
+  hydrate(); updateVote();
+}
+function updateVote(){
+  const n=Object.keys(S.hoje.cit).length;
+  const c=$('vote-count'); if(c)c.textContent=n+' de 5 decisões marcadas.';
+  const b=$('b-revelar'); if(b)b.disabled=(n<5);
+}
+function validaCNJ(s){
+  const d=String(s).replace(/\D/g,'');
+  if(d.length!==20)return {ok:null,msg:'Digite os 20 dígitos do número único (NNNNNNN-DD.AAAA.J.TR.OOOO).'};
+  const n=d.slice(0,7), dv=d.slice(7,9), ano=d.slice(9,13), j=d[13], tr=d.slice(14,16), o=d.slice(16);
+  const mod=x=>{ let r=0; for(let i=0;i<x.length;i++)r=(r*10+Number(x[i]))%97; return r; };
+  const ok=(mod(n+ano+j+tr+o+dv)===1);
+  const certo=String(98-mod(n+ano+j+tr+o+'00')).padStart(2,'0');
+  const fmt=n+'-'+dv+'.'+ano+'.'+j+'.'+tr+'.'+o;
+  const ramo=(JNOMES[j]||'ramo desconhecido')+', tribunal '+tr;
+  return {ok:ok,msg:ok?fmt+': dígitos verificadores corretos ('+ramo+'). Isso não prova que o processo existe, só que o número é possível.':fmt+': dígitos verificadores incorretos. Este número não pode existir. O dígito correto, com os demais campos, seria '+certo+'.'};
+}
+function renderCNJ(v){
+  const out=$('cnj-out'); if(!out)return;
+  if(!String(v).trim()){ out.textContent=''; out.className='cnjres'; return; }
+  const r=validaCNJ(v); out.textContent=r.msg; out.className='cnjres'+(r.ok===true?' ok':(r.ok===false?' bad':''));
+}
+function renderMeter(){
+  const m=termo();
+  const el=$('meter'); if(!el)return;
+  el.innerHTML='<div class="card summary"><div class="col"><h3>Exposição</h3><p class="big">'+esc(m.nivel)+'</p><div class="pips" aria-hidden="true">'+TERM.map((x,i)=>'<i class="'+(i<m.s?'on':'')+'"></i>').join('')+'</div><p>'+m.s+' de 6 práticas existem hoje'+(m.a<6?' ('+m.a+' respondidas)':'')+'.</p></div>'+
+   '<div class="col"><h3>Se o tribunal perguntar amanhã</h3><p>Quem conferiu a citação desta peça, e quando?</p><p class="big2">'+esc(m.prova||'Responda as perguntas 2 e 3.')+'</p></div>'+
+   '<div class="col"><h3>Um passo para começar</h3><p>'+esc(m.prox||'Responda as seis perguntas.')+'</p></div></div>';
+}
+function renderH2(){ hydrate(); renderMeter(); }
+function leituraLinhas(){
+  const m=termo(), L=[];
+  if(S.hoje.rev)L.push('Teste das citações: a sala acertou '+acertos()+' de 5. '+(acertos()===5?'Com 30 citações por peça, a memória não escala.':'Nenhuma das cinco dava para validar só olhando.'));
+  else L.push('Teste das citações: ainda não revelado.');
+  L.push('Exposição: '+m.nivel+(m.a?' ('+m.s+' de 6 práticas existem hoje).':'.'));
+  if(m.prova)L.push('Se o tribunal perguntar quem conferiu: '+m.prova);
+  if(m.prox)L.push('Primeiro passo: '+m.prox);
+  return L;
+}
+function renderH3(){
+  const a=S.hoje.rev?acertos():null, m=termo();
+  $('h3-body').innerHTML=
+   '<div class="grid"><div class="card"><span class="lbl">Teste das citações</span><p class="stat">'+(a==null?'Não revelado':a+' de 5')+'</p></div><div class="card"><span class="lbl">Exposição</span><p class="stat">'+esc(m.nivel)+'</p><p class="small">'+m.s+' de 6 práticas existem hoje</p></div></div>'+
+   '<div class="card"><h3>Leitura rápida</h3><ul class="plain">'+leituraLinhas().map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>'+
+   '<div class="card" id="ai-card"><h3>Devolutiva escrita pelo Claude</h3><p class="small">O Claude escreve, na hora, uma leitura a partir das respostas desta tela. A chamada não inclui nome de escritório nem dados de clientes. Como todo texto de IA, precisa de revisão antes de ser usado.</p>'+
+   '<div class="tools"><button class="btn primary" type="button" id="b-ai" data-act="ai">Pedir a devolutiva</button><button class="btn" type="button" id="b-ai-stop" data-act="ai-stop" hidden>Parar</button><button class="btn" type="button" data-act="copy-ai">Copiar texto</button></div>'+
+   '<div class="ai-box" id="ai-out" aria-live="polite"></div><p class="small" id="ai-msg"></p></div>'+
+   '<div class="card"><h3>Levar o resumo</h3><p class="small">Resumo das respostas de hoje em texto. Copie e guarde, ou cole na conversa com o Claude para montar a proposta de capacitação.</p><div class="tools"><button class="btn" type="button" data-act="copy">Copiar resumo</button></div></div>';
+  $('ai-out').textContent=S.hoje.ai||'A devolutiva aparece aqui.';
+  getSample().then(sm=>{ if(!sm){ const b=$('b-ai'); if(b)b.disabled=true; aiMsg('A devolutiva por IA funciona só no link publicado, com internet. Aqui, use o resumo abaixo.'); } });
+}
+let smP=null, aiCtl=null, aiBusy=false;
+function getSample(){
+  if(!window.claude||typeof window.claude.use!=='function')return Promise.resolve(null);
+  if(!smP)smP=Promise.resolve().then(()=>window.claude.use('sample')).catch(()=>null);
+  return smP;
+}
+function aiMsg(t){ const e=$('ai-msg'); if(e)e.textContent=t||''; }
+function setAiUI(run){ const b=$('b-ai'), s=$('b-ai-stop'); if(b)b.disabled=run; if(s)s.hidden=!run; }
+function promptIA(){
+  const m=termo();
+  const erros=CIT.filter(c=>S.hoje.rev&&S.hoje.cit[c.id]&&S.hoje.cit[c.id]!==c.v).map(c=>'a citação era '+c.tipo+' e a sala marcou “'+VT[S.hoje.cit[c.id]]+'”');
+  const linhas=TERM.map(x=>{ const v=S.hoje.term[x.id]; return '- '+x.t+' '+(typeof v==='boolean'?(v?'Sim.':'Não.'):'Sem resposta.'); }).join('\n');
+  return ['Você escreve para sócios de um escritório de advocacia, logo depois de uma dinâmica numa reunião sobre IA no trabalho jurídico. Use somente os dados abaixo.',
+   'Regras: português do Brasil; frases curtas; sem jargão técnico; sem emojis; no máximo 190 palavras. Não cite leis, decisões, súmulas, estatísticas nem números de processo. Não prometa resultados.',
+   'Formato exato, com estes três títulos, cada um em uma linha própria:',
+   'O que a sala viu','(duas frases)','Três passos para os próximos 30 dias','(lista numerada com três itens, cada um começando por um verbo no imperativo)','Para levar para casa','(uma única pergunta)','',
+   'Dados:',
+   S.hoje.rev?('Teste das cinco citações: a sala acertou '+acertos()+' de 5.'+(erros.length?' Erros: '+erros.join('; ')+'.':'')):'Teste das cinco citações: não foi feito.',
+   'Termômetro de exposição (nível '+m.nivel+'; '+m.s+' de 6 práticas existem hoje):',
+   linhas,
+   (S.perfil.areas&&S.perfil.areas.length?'Áreas de atuação: '+S.perfil.areas.join(', ')+'.':'')].join('\n');
+}
+async function pedirIA(){
+  if(aiBusy)return;
+  if(!S.hoje.rev&&termo().a===0){ aiMsg('Revele o teste das citações ou responda o termômetro antes de pedir a devolutiva.'); return; }
+  const sm=await getSample();
+  if(!sm){ aiMsg('Esta visualização não oferece o Claude. Use o resumo abaixo.'); return; }
+  aiBusy=true; aiCtl=new AbortController(); setAiUI(true); aiMsg('');
+  const out=$('ai-out'); out.textContent='Pensando…';
+  try{
+    const r=await sm(promptIA(),{signal:aiCtl.signal,modelTier:'quick',cache:false,onText:u=>{ out.textContent=u.text; }});
+    S.hoje.ai=r.text; out.textContent=r.text; save(); updateSteps();
+    aiMsg(r.truncated?'A resposta foi cortada. Peça de novo.':'Escrita pelo Claude a partir das respostas desta tela. Revise antes de usar. Se alguma frase citar lei ou decisão, ela passa pelo protocolo de conferência.');
+  }catch(e){
+    const c=e&&e.code;
+    if(c==='cancelled'){ out.textContent=(e&&e.text)||S.hoje.ai||'A devolutiva aparece aqui.'; aiMsg('Interrompida.'); }
+    else if(c==='not_granted'||c==='sampling_disabled'||c==='not_declared'||c==='capability_disabled'||c==='capability_removed'){ out.textContent=S.hoje.ai||'A devolutiva aparece aqui.'; const b=$('b-ai'); if(b)b.disabled=true; aiMsg('O Claude não foi liberado nesta visualização. Use o resumo abaixo.'); }
+    else if(c==='rate_limited'){ out.textContent=(e&&e.text)||S.hoje.ai||'A devolutiva aparece aqui.'; aiMsg('Muitas chamadas em pouco tempo. Tente de novo em instantes.'); }
+    else if(c==='session_expired'){ out.textContent=S.hoje.ai||'A devolutiva aparece aqui.'; aiMsg('Entre de novo na sua conta Claude e tente outra vez.'); }
+    else { out.textContent=(e&&e.text)||S.hoje.ai||'A devolutiva aparece aqui.'; aiMsg('A geração foi interrompida. Tente de novo ou use o resumo abaixo.'); }
+  }finally{ aiBusy=false; aiCtl=null; setAiUI(false); const b=$('b-ai'); if(b&&b.dataset.off)b.disabled=true; }
+}
+function cartaoHTML(){
+  const m=termo(), a=S.hoje.rev?acertos():null, pf=S.perfil;
+  const regras=REGRAS.map((r,i)=>{ const pri=r.ts.some(k=>S.hoje.term[k]===false); return '<div class="ct-regra"><b class="ct-n">'+(i+1)+'</b><div><p><b>'+esc(r.t)+'</b>'+(pri?'<span class="ct-pri">Prioridade</span>':'')+'</p><p>'+esc(r.d)+'</p></div></div>'; }).join('');
+  const perg=[['Existe?','Localizei na fonte oficial.'],['Diz isso?','Li o inteiro teor.'],['Está vigente?','Não foi revogada nem reformada.'],['Quem conferiu?','Nome, data e link registrados.']];
+  return '<h1>Cartão de 30 dias</h1><p class="rp-meta"><b>'+esc(pf.firma||'Escritório')+'</b> · '+esc(fmtData(pf.data))+'</p>'+
+   (S.exemplo?'<p class="rp-ex">Exemplo ilustrativo. As respostas são hipóteses e não descrevem nenhum escritório.</p>':'')+
+   '<div class="rp-sec"><h2>Resultado de hoje</h2><p>Teste das citações: <b>'+(a==null?'não realizado':a+' de 5')+'</b> · Exposição: <b>'+esc(m.nivel)+'</b>'+(m.a?' ('+m.s+' de 6 práticas existem hoje)':'')+'</p>'+(m.prova?'<p>'+esc(m.prova)+'</p>':'')+'</div>'+
+   '<div class="rp-sec"><h2>Três regras para os próximos 30 dias</h2>'+regras+'</div>'+
+   '<div class="rp-sec"><h2>Antes de protocolar, quatro perguntas</h2><div class="ct-q">'+perg.map(p=>'<div><b>'+p[0]+'</b>'+p[1]+'</div>').join('')+'</div></div>'+
+   '<div class="rp-sec"><h2>Cinco números para começar a medir</h2><table><thead><tr><th style="width:56%">Indicador</th><th>Hoje</th><th>Em 30 dias</th></tr></thead><tbody>'+BASE.map(b=>'<tr><td>'+esc(b.t)+'</td><td class="blank"></td><td class="blank"></td></tr>').join('')+'</tbody></table></div>'+
+   '<div class="rp-sec"><h2>Próxima conversa</h2><p><b>'+esc(S.fecho.proxima||'A combinar')+'</b>'+(S.fecho.resp?' · Responsável: '+esc(S.fecho.resp):'')+'</p><p>Trazer os números da coluna “Hoje” e as dúvidas que surgirem na aplicação das regras.</p></div>'+
+   '<p class="rp-foot">Cartão feito a partir das respostas dadas na reunião. Não é parecer jurídico.</p>';
+}
+function buildCartao(){ $('relatorio').innerHTML=cartaoHTML(); }
+function renderPreview(){ const p=$('h4-preview'); if(p)p.innerHTML=cartaoHTML(); }
+function renderH4(){ hydrate(); renderPreview(); }
+function fichaTexto(){
+  const m=termo(), pf=S.perfil, L=[];
+  L.push('Ficha da reunião · '+(pf.firma||'escritório não informado')+' · '+fmtData(pf.data));
+  if(pf.areas&&pf.areas.length)L.push('Áreas: '+pf.areas.join(', '));
+  L.push('');
+  L.push('Teste das cinco citações: '+(S.hoje.rev?acertos()+' de 5':'não revelado'));
+  CIT.forEach((c,i)=>{ const v=S.hoje.cit[c.id]; L.push('  '+(i+1)+'. '+VLAB[c.v]+' ('+c.tipo+'). A sala marcou: '+(v?VT[v]:'sem voto')); });
+  L.push('');
+  L.push('Termômetro de exposição: '+m.nivel+' ('+m.s+' de 6 práticas existem hoje)');
+  TERM.forEach(x=>{ const v=S.hoje.term[x.id]; L.push('  '+(typeof v==='boolean'?(v?'Sim':'Não'):'—')+' · '+x.t); });
+  if(m.prova)L.push('Se o tribunal perguntar quem conferiu: '+m.prova);
+  if(m.prox)L.push('Primeiro passo sugerido: '+m.prox);
+  if(S.hoje.ai){ L.push(''); L.push('Devolutiva escrita pelo Claude:'); L.push(S.hoje.ai); }
+  L.push(''); L.push('Próxima conversa: '+(S.fecho.proxima||'a combinar'));
+  L.push(''); L.push('Use esta ficha para montar a proposta de capacitação.');
+  return L.join('\n');
+}
+function setModo(m){
+  S.modo=(m==='oficina')?'oficina':'hoje';
+  $('mod-hoje').hidden=(S.modo!=='hoje'); $('mod-oficina').hidden=(S.modo!=='oficina');
+  hydrate();
+  if(S.modo==='hoje')goH(S.hstep||1); else go(S.step||1);
+}
+function goH(n){
+  n=Math.max(1,Math.min(4,n)); S.hstep=n;
+  document.querySelectorAll('.panel[data-hstep]').forEach(p=>{ p.hidden=(Number(p.dataset.hstep)!==n); });
+  if(n===1)renderH1(); if(n===2)renderH2(); if(n===3)renderH3(); if(n===4)renderH4();
+  updateSteps(); save();
+  try{ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }catch(e){}
 }
 
 /* ---------- início ---------- */
 $('panels').innerHTML=panel1()+panel2()+panel3()+panel4()+panel5();
+$('hpanels').innerHTML=hpanel1()+hpanel2()+hpanel3()+hpanel4();
 document.addEventListener('input',onEdit); document.addEventListener('change',onEdit);
 document.addEventListener('click',e=>{
   const t=e.target.closest?e.target.closest('button'):null; if(!t)return;
-  if(t.dataset.go)go(S.step+Number(t.dataset.go));
-  else if(t.dataset.stepGo)go(Number(t.dataset.stepGo));
-  else if(t.dataset.act==='toggleall'){ showAll=!showAll; renderResultado(); }
-  else if(t.dataset.act==='pdf')gerarPDF();
-  else if(t.dataset.act==='json')entregar(nomeArq('json'),estadoJSON(),'application/json');
-  else if(t.dataset.act==='copy')copiar();
+  const d=t.dataset;
+  if(d.modo)setModo(d.modo);
+  else if(d.go)go(S.step+Number(d.go));
+  else if(d.hgo)goH(S.hstep+Number(d.hgo));
+  else if(d.stepGo)go(Number(d.stepGo));
+  else if(d.hstepGo)goH(Number(d.hstepGo));
+  else if(d.act){
+    const a=d.act;
+    if(a==='toggleall'){ showAll=!showAll; renderResultado(); }
+    else if(a==='pdf')gerarPDF('oficina');
+    else if(a==='pdf-cartao')gerarPDF('cartao');
+    else if(a==='json')entregar(nomeArq('json'),estadoJSON(),'application/json');
+    else if(a==='copy')copiar();
+    else if(a==='copy-ai'){ if(S.hoje.ai)copiarTexto(S.hoje.ai,'Texto copiado.'); else toast('Ainda não há texto para copiar.'); }
+    else if(a==='revelar'){ S.hoje.rev=true; save(); renderH1(); updateSteps(); }
+    else if(a==='refazer'){ S.hoje.cit={}; S.hoje.rev=false; save(); renderH1(); updateSteps(); }
+    else if(a==='cnj5'){ const i=$('cnj-in'); if(i){ i.value='0000123-47.2023.5.08.0001'; renderCNJ(i.value); } }
+    else if(a==='ai')pedirIA();
+    else if(a==='ai-stop'){ if(aiCtl)aiCtl.abort(); }
+  }
 });
-$('b-pdf').addEventListener('click',gerarPDF);
+$('b-pdf').addEventListener('click',()=>gerarPDF());
 $('b-json').addEventListener('click',()=>entregar(nomeArq('json'),estadoJSON(),'application/json'));
 $('b-abrir').addEventListener('click',()=>$('f-abrir').click());
 $('f-abrir').addEventListener('change',e=>{ abrirArquivo(e.target.files&&e.target.files[0]); e.target.value=''; });
 $('b-exemplo').addEventListener('click',exemplo);
 $('b-novo').addEventListener('click',novo);
-window.addEventListener('beforeprint',buildReport);
-hydrate(); setStatus(); go(S.step||1);
+window.addEventListener('beforeprint',()=>{ if(S.modo==='hoje')buildCartao(); else buildReport(); });
+hydrate(); setStatus(); setModo(S.modo||'hoje');
 })();
+
 </script>
 
 </body></html>
