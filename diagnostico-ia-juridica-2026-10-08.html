@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Diagnóstico de IA jurídica</title><style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: ferramenta de uma coluna, com etapas no topo e painéis que trocam. Mesmo visual do deck: tinta azul, papel e cobre. */
+:root{
+  --bg:#F6F3EC; --surface:#FBF9F4; --surface-2:#EDE8DC; --line:#D9D3C5; --line-strong:#B3AB97;
+  --fg:#14213D; --fg-soft:#3F4A5E; --muted:#5A6275;
+  --accent:#9C4E1C; --accent-fg:#FBF9F4; --teal:#1F6F78; --focus:#1F6F78;
+  --ink:#14213D; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
+  --n1:#F1E2C6; --n1-fg:#14213D; --n2:#E4B98A; --n2-fg:#14213D; --n3:#9C4E1C; --n3-fg:#FBF9F4;
+  --yes:#1F6F78; --yes-fg:#FBF9F4; --no:#5A6275; --no-fg:#FBF9F4;
+  --font-display:'Libre Baskerville', Georgia, serif; --font-body:'Public Sans', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1630; --surface:#16213F; --surface-2:#1E2D4F; --line:#2B3B64; --line-strong:#4A5C8A;
+    --fg:#F1EDE3; --fg-soft:#C9D1E0; --muted:#9AA6BD;
+    --accent:#E9B872; --accent-fg:#14213D; --teal:#7CC4C9; --focus:#7CC4C9;
+    --ink:#1E2D4F; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
+    --n1:#3B3A47; --n1-fg:#F1EDE3; --n2:#7A5A3C; --n2-fg:#F6F3EC; --n3:#E9B872; --n3-fg:#14213D;
+    --yes:#7CC4C9; --yes-fg:#0E1630; --no:#9AA6BD; --no-fg:#0E1630;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1630; --surface:#16213F; --surface-2:#1E2D4F; --line:#2B3B64; --line-strong:#4A5C8A;
+  --fg:#F1EDE3; --fg-soft:#C9D1E0; --muted:#9AA6BD;
+  --accent:#E9B872; --accent-fg:#14213D; --teal:#7CC4C9; --focus:#7CC4C9;
+  --ink:#1E2D4F; --on-ink:#F6F3EC; --on-ink-soft:#C9D1E0; --amber:#E9B872;
+  --n1:#3B3A47; --n1-fg:#F1EDE3; --n2:#7A5A3C; --n2-fg:#F6F3EC; --n3:#E9B872; --n3-fg:#14213D;
+  --yes:#7CC4C9; --yes-fg:#0E1630; --no:#9AA6BD; --no-fg:#0E1630;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.5;padding-inline:clamp(16px,4vw,48px);padding-block:28px 72px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.2;text-wrap:balance;margin:0;font-weight:700}
+h1{font-size:clamp(28px,4.2vw,40px)}
+h2{font-size:clamp(24px,3vw,30px)}
+h3{font-size:19px}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1120px;margin-inline:auto;display:flex;flex-direction:column;gap:24px}
+.eyebrow{font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sub,.lead{color:var(--fg-soft);max-width:68ch}
+.small{font-size:14px;color:var(--muted)}
+.top{display:flex;flex-wrap:wrap;gap:20px 32px;justify-content:space-between;align-items:flex-end}
+.ttl{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.btn{min-height:44px;padding:10px 16px;border-radius:8px;border:1px solid var(--line-strong);background:var(--surface);cursor:pointer;font-weight:600;font-size:15px}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted);text-decoration:underline}
+.btn.warn{border-color:var(--accent);color:var(--accent)}
+.status{font-size:14px;color:var(--muted)}
+.banner{background:var(--surface-2);border:1px dashed var(--line-strong);border-radius:10px;padding:12px 16px;font-size:15px}
+.steps{display:flex;flex-wrap:wrap;gap:8px}
+.step{flex:1 1 150px;display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;min-height:64px}
+.step .nm{font-weight:600}
+.step .pg{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.step[aria-current="step"]{background:var(--ink);border:2px solid var(--accent);color:var(--on-ink)}
+.step[aria-current="step"] .pg{color:var(--on-ink-soft)}
+.panel{display:flex;flex-direction:column;gap:24px}
+.head{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.lbl{font-weight:600;font-size:15px}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg)}
+textarea{min-height:96px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative;display:inline-flex}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border-radius:999px;border:1px solid var(--line-strong);background:var(--bg);font-size:15px}
+.chip input:checked+span{background:var(--ink);color:var(--on-ink);border-color:var(--accent);font-weight:600}
+.chip input:checked+span::before{content:"\2713";margin-right:8px;color:var(--amber)}
+.chip input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.dor{gap:12px}
+.dor h3 .id{color:var(--accent);margin-right:6px}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sc{position:relative;display:flex}
+.sc input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.sc span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;width:100%;min-height:58px;padding:6px 4px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);text-align:center;line-height:1.2}
+.sc b{font-size:20px}
+.sc small{font-size:12px;color:var(--muted)}
+.sc input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.sc.n0 input:checked+span{background:var(--surface-2);border-color:var(--fg-soft);border-width:2px}
+.sc.n1 input:checked+span{background:var(--n1);color:var(--n1-fg);border-color:var(--n1-fg)}
+.sc.n2 input:checked+span{background:var(--n2);color:var(--n2-fg);border-color:var(--n2-fg)}
+.sc.n3 input:checked+span{background:var(--n3);color:var(--n3-fg);border-color:var(--n3)}
+.sc input:checked+span small{color:inherit}
+.mgrp{display:flex;flex-direction:column;gap:12px}
+.mq{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 20px;align-items:center;padding-block:12px;border-top:1px solid var(--line)}
+.mq:first-of-type{border-top:0}
+.yn{display:flex;gap:8px}
+.yn label{position:relative;display:flex}
+.yn input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.yn span{display:flex;align-items:center;justify-content:center;min-width:76px;min-height:44px;padding:8px 14px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);font-weight:600}
+.yn input:checked+span.y{background:var(--yes);color:var(--yes-fg);border-color:var(--yes)}
+.yn input:checked+span.n{background:var(--no);color:var(--no-fg);border-color:var(--no)}
+.yn input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.pager{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding-top:8px}
+.summary{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));background:var(--ink);color:var(--on-ink);border-color:var(--line-strong)}
+.summary h3{font-family:var(--font-body);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.summary .big{font-family:var(--font-display);font-size:28px;font-weight:700;line-height:1.2;margin-top:6px}
+.summary p,.summary li{color:var(--on-ink-soft)}
+.summary ul,.summary ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.summary .col{display:flex;flex-direction:column;gap:4px;min-width:0}
+.bars{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.bar{display:flex;flex-direction:column;gap:6px}
+.bar .seg{display:flex;gap:4px}
+.bar .seg i{flex:1;height:12px;border-radius:3px;background:var(--surface-2);border:1px solid var(--line-strong)}
+.bar .seg i.on{background:var(--teal);border-color:var(--teal)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.off td{color:var(--muted)}
+tr.off td:nth-child(2){text-decoration:line-through}
+td select{width:auto;min-width:170px;min-height:38px;padding:4px 8px;font-size:14px}
+.tag{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid var(--line-strong);font-size:13px;white-space:nowrap}
+.waves{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.wave{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--accent);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.wave:nth-child(2){border-top-color:var(--fg)}
+.wave:nth-child(3){border-top-color:var(--teal)}
+.wave ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.id{font-variant-numeric:tabular-nums;color:var(--muted)}
+.trilha .mod{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:6px 12px;align-items:center;padding-block:10px;border-top:1px solid var(--line)}
+.trilha .mod input{min-height:40px;text-align:center}
+.trilha .mod .meta{font-size:13px;color:var(--muted)}
+.tot{display:flex;flex-wrap:wrap;gap:6px 20px;font-weight:600;padding-top:10px;border-top:2px solid var(--fg)}
+.tot span{font-variant-numeric:tabular-nums}
+.note{font-size:14px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--on-ink);padding:12px 18px;border-radius:10px;font-size:15px;max-width:min(92vw,520px);z-index:20;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+@media (max-width:560px){
+  .scale{grid-template-columns:repeat(2,1fr)}
+  .mq{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Relatório: papel claro fixo, usado no PDF */
+#rp-host{position:fixed;left:-10000px;top:0;width:794px;pointer-events:none}
+#relatorio{background:#FFFFFF;color:#14213D;font-family:var(--font-body);font-size:12.5px;line-height:1.45;width:794px;padding:8px 10px 0}
+#relatorio h1{font-size:24px;margin:2px 0 4px;color:#14213D}
+#relatorio h2{font-size:15px;margin:0 0 6px;color:#9C4E1C;font-family:var(--font-body);text-transform:uppercase;letter-spacing:.08em}
+#relatorio h3{font-size:13px;margin:8px 0 3px;font-family:var(--font-body)}
+#relatorio .rp-sec{margin:0 0 14px;break-inside:avoid;page-break-inside:avoid}
+#relatorio .rp-meta{color:#3F4A5E;margin:0 0 10px}
+#relatorio .rp-ex{border:1px dashed #9C4E1C;padding:6px 10px;margin:0 0 10px;color:#9C4E1C;font-weight:600}
+#relatorio table{width:100%;font-size:11.5px;border:0}
+#relatorio th{background:#EDE8DC;color:#3F4A5E;font-size:10.5px;padding:5px 7px;border-bottom:1px solid #B3AB97}
+#relatorio td{padding:5px 7px;border-bottom:1px solid #D9D3C5;color:#14213D}
+#relatorio .rp-two{display:flex;gap:16px}
+#relatorio .rp-two>div{flex:1;min-width:0}
+#relatorio ul,#relatorio ol{margin:2px 0 0;padding-left:18px}
+#relatorio .rp-foot{margin-top:10px;color:#5A6275;font-size:10.5px;border-top:1px solid #D9D3C5;padding-top:6px}
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#FFFFFF !important;padding:0 !important}
+  .app,.toast{display:none !important}
+  #rp-host{position:static;left:auto;width:auto;pointer-events:auto}
+  #relatorio{width:auto;padding:0}
+}
+</style>
+
+<div class="app wrap" id="app">
+  <header class="top">
+    <div class="ttl">
+      <p class="eyebrow">Mapa de IA para escritórios</p>
+      <h1>Diagnóstico de IA jurídica</h1>
+      <p class="sub">Preenchimento ao vivo com os sócios, de cima para baixo. As respostas ficam salvas neste navegador.</p>
+    </div>
+    <div class="tools" role="group" aria-label="Ações">
+      <button class="btn" id="b-exemplo" type="button">Ver exemplo</button>
+      <button class="btn" id="b-abrir" type="button">Abrir respostas</button>
+      <button class="btn" id="b-json" type="button">Salvar respostas</button>
+      <button class="btn primary" id="b-pdf" type="button">Gerar PDF</button>
+      <button class="btn ghost" id="b-novo" type="button">Novo diagnóstico</button>
+      <input type="file" id="f-abrir" accept="application/json,.json" hidden>
+    </div>
+  </header>
+  <p class="status" id="status" role="status"></p>
+  <p class="banner" id="ex-banner" hidden>Exemplo ilustrativo. As notas são hipóteses e não descrevem nenhum escritório. Use Novo diagnóstico para começar do zero.</p>
+  <nav class="steps" id="steps" aria-label="Etapas do diagnóstico"></nav>
+  <main id="panels"></main>
+  <p class="note">Diagnóstico declaratório, feito a partir das respostas dos sócios. Impacto e esforço dos casos são estimativas iniciais e devem ser calibrados com dados reais.</p>
+</div>
+<div id="rp-host" aria-hidden="true"><div id="relatorio"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+(function(){
+'use strict';
+const DORES=[{"id":"P1","n":"Prazos e publicações","d":"Intimações chegam por vários canais. Leitura, contagem e agenda dependem de uma pessoa, e um prazo perdido custa caro."},{"id":"P2","n":"Pesquisa lenta e citação sem lastro","d":"Cada tese consome horas, e há o risco de citar precedente inexistente ou que não diz o que a peça afirma."},{"id":"P3","n":"Peças repetitivas, qualidade irregular","d":"A mesma petição é reescrita do zero e o padrão muda de advogado para advogado."},{"id":"P4","n":"Conhecimento preso nas pessoas","d":"Teses, modelos e pareceres ficam em pastas e e-mails. Quem sai leva o saber junto."},{"id":"P5","n":"Documentos em volume","d":"Autos, contratos, provas e cálculos exigem leitura integral, e o tempo de leitura aperta o prazo."},{"id":"P6","n":"Horas, honorários e faturamento","d":"Lançamento de horas atrasado, cobrança irregular e pouca visibilidade da rentabilidade."},{"id":"P7","n":"Cliente que quer informação","d":"\"Como está meu processo?\" ocupa advogados, e os relatórios são feitos à mão."},{"id":"P8","n":"Sigilo e proteção de dados","d":"Dados de clientes circulam em ferramentas pessoais ou sem contrato que proíba o treino com eles."},{"id":"P9","n":"IA sem regra nem registro","d":"Cada um usa a ferramenta que prefere e ninguém sabe quem conferiu o quê antes de protocolar."},{"id":"P10","n":"Pressão de preço e de eficiência","d":"Clientes empresariais comparam bancas, auditam faturas e pedem previsibilidade de custo."},{"id":"P11","n":"Captação e relacionamento","d":"Novos clientes dependem de indicação, e a triagem inicial e a presença digital são artesanais."},{"id":"P12","n":"Gestão e sucessão da banca","d":"Decisões sem indicadores de carteira, prazo e margem, com forte dependência dos sócios fundadores."}];
+const CASOS=[{"id":"C01","fr":"PRO","t":"Mesa de prazos","dr":["P1"],"i":4,"e":2,"ext":false},{"id":"C02","fr":"PRO","t":"Conferência de citações antes de protocolar","dr":["P2","P9"],"i":5,"e":2,"ext":false},{"id":"C03","fr":"PRO","t":"Política de uso de IA e registro de conferência","dr":["P8","P9"],"i":4,"e":1,"ext":false},{"id":"C04","fr":"PRO","t":"Anonimização antes do uso de IA","dr":["P8"],"i":3,"e":2,"ext":false},{"id":"C05","fr":"PRD","t":"Pesquisa jurisprudencial com fonte","dr":["P2"],"i":4,"e":3,"ext":false},{"id":"C06","fr":"PRD","t":"Primeira minuta a partir do modelo da casa","dr":["P3"],"i":5,"e":3,"ext":false},{"id":"C07","fr":"PRD","t":"Resumo de autos e linha do tempo","dr":["P5","P3"],"i":4,"e":2,"ext":false},{"id":"C08","fr":"PRD","t":"Revisão de contratos com checklist da banca","dr":["P5","P3"],"i":4,"e":3,"ext":false},{"id":"C09","fr":"PRD","t":"Conferência de cálculos trabalhistas e de liquidação","dr":["P5","P1"],"i":4,"e":3,"ext":false},{"id":"C10","fr":"PRD","t":"Due diligence em lote","dr":["P5","P10"],"i":5,"e":4,"ext":false},{"id":"C11","fr":"PRD","t":"Preparação de audiência","dr":["P3"],"i":3,"e":3,"ext":false},{"id":"C12","fr":"RET","t":"Memória da banca","dr":["P4","P2"],"i":5,"e":4,"ext":false},{"id":"C13","fr":"RET","t":"Biblioteca de instruções permanentes","dr":["P3","P4","P9"],"i":4,"e":2,"ext":false},{"id":"C14","fr":"RET","t":"Trilha de entrada para associados e estagiários","dr":["P4","P12"],"i":3,"e":2,"ext":false},{"id":"C15","fr":"CRE","t":"Relatório periódico ao cliente","dr":["P7","P10"],"i":4,"e":2,"ext":true},{"id":"C16","fr":"CRE","t":"Demonstrativo de valor para cliente que audita fatura","dr":["P10","P6"],"i":3,"e":2,"ext":true},{"id":"C17","fr":"CRE","t":"Painel de gestão da banca","dr":["P6","P12"],"i":4,"e":3,"ext":false},{"id":"C18","fr":"CRE","t":"Pré-lançamento de horas","dr":["P6"],"i":3,"e":2,"ext":false},{"id":"C19","fr":"CRE","t":"Triagem de novos clientes","dr":["P11","P7"],"i":3,"e":2,"ext":true},{"id":"C20","fr":"CRE","t":"Conteúdo jurídico para redes dentro das regras da OAB","dr":["P11"],"i":2,"e":1,"ext":true},{"id":"C21","fr":"CRE","t":"Proposta e precificação","dr":["P10","P6"],"i":3,"e":3,"ext":false}];
+const FRENTES={"PRO":{"nome":"Proteger","d":"Reduz risco: prazo perdido, citação sem lastro, vazamento de dado."},"PRD":{"nome":"Produzir","d":"Ganha tempo na peça, na pesquisa e na leitura de documentos."},"RET":{"nome":"Reter","d":"Transforma o saber dos sócios em patrimônio da banca."},"CRE":{"nome":"Crescer","d":"Melhora a relação com o cliente, a gestão e a captação."}};
+const AREAS=['Cível','Trabalhista','Empresarial','Tributário','Família e sucessões','Previdenciário','Consumidor','Penal','Outras'];
+const FERR=['ChatGPT','Gemini','Copilot (Microsoft)','Claude','Ferramenta jurídica especializada','Nenhuma','Outra'];
+const QUEM=['Ninguém','Poucos','A maioria','Todos'];
+const USOS=['Pesquisa jurídica','Minutas e peças','Resumo de documentos','Revisão de contratos','Atendimento ao cliente','Outros'];
+const ESCALA=['Não pesa','Incomoda','Pesa','Urgente'];
+const MAT=[
+ {id:'m1',b:'Governança',t:'Existe uma política escrita de uso de IA, conhecida por toda a equipe.'},
+ {id:'m2',b:'Governança',t:'Há uma lista de ferramentas aprovadas, com contrato que proíbe o uso dos dados do escritório para treinar modelos.'},
+ {id:'m3',b:'Conferência',t:'Toda citação que sai do escritório é conferida na fonte oficial antes do protocolo.'},
+ {id:'m4',b:'Conferência',t:'A conferência fica registrada: quem conferiu, quando e onde.'},
+ {id:'m5',b:'Prática',t:'A equipe usa instruções padronizadas para pedir trabalho à IA, com fontes, limites e regra de incerteza.'},
+ {id:'m6',b:'Prática',t:'A equipe recebeu treinamento sobre uso de IA nos últimos 12 meses.'},
+ {id:'m7',b:'Gestão',t:'O escritório mede algum efeito do uso de IA: horas, erros de citação ou prazos.'},
+ {id:'m8',b:'Gestão',t:'O contrato de honorários informa o uso de IA e a revisão por advogado.'}
+];
+const BLOCOS=['Governança','Conferência','Prática','Gestão'];
+const NIVEIS={
+ 'Inicial':'Uso individual, sem regra comum. O risco está na falta de conferência e de sigilo.',
+ 'Em estruturação':'Há regras em parte. Falta transformar conferência e registro em rotina.',
+ 'Organizado':'Regras e registro existem. O próximo ganho está em medir e ampliar os casos.'
+};
+const MOD={
+ FUND:{n:'Fundamentos e riscos: como a IA erra e o que os tribunais já decidiram',h:2,p:'ABC',e:'Material de referência com os casos e as regras'},
+ CONF:{n:'Protocolo de conferência de citações, na prática',h:2,p:'ABC',e:'Protocolo e modelo de registro de conferência'},
+ POL:{n:'Política de uso, sigilo e registro',h:2,p:'ABC',e:'Minuta da política de uso de IA e cláusula de transparência'},
+ INI:{n:'Primeiros passos: uso seguro no dia a dia',h:2,p:'BC',e:'Guia de bolso de uso seguro'},
+ ORG:{n:'Medir e auditar o uso: indicadores e revisão trimestral',h:2,p:'A',e:'Painel de indicadores e rito de revisão'},
+ C01:{n:'Mesa de prazos: leitura de intimações e agenda',h:2,p:'BC',e:'Rotina de mesa de prazos'},
+ C05:{n:'Pesquisa jurisprudencial com fonte',h:3,p:'B',e:'Roteiro de pesquisa com verificação'},
+ C06:{n:'Primeira minuta a partir do modelo da casa',h:3,p:'B',e:'Modelos e instruções por tipo de peça'},
+ C07:{n:'Resumo de autos e linha do tempo',h:2,p:'BC',e:'Modelo de resumo com remissão à folha'},
+ C08:{n:'Revisão de contratos com checklist da banca',h:3,p:'B',e:'Checklist de cláusulas da banca'},
+ C09:{n:'Conferência de cálculos trabalhistas',h:3,p:'B',e:'Roteiro de conferência de cálculos'},
+ C10:{n:'Due diligence em lote',h:3,p:'B',e:'Fluxo de due diligence com relatório de pontos de atenção'},
+ C11:{n:'Preparação de audiência',h:2,p:'B',e:'Roteiro de preparação de audiência'},
+ C12:{n:'Memória da banca: organizar teses e modelos',h:3,p:'AB',e:'Acervo curado, com dono, versão e data'},
+ C13:{n:'Instruções permanentes da banca',h:2,p:'AB',e:'Pacote de instruções padrão da banca'},
+ C14:{n:'Trilha de entrada para novos advogados',h:2,p:'A',e:'Trilha de entrada com casos reais'},
+ C15:{n:'Relatório periódico ao cliente',h:2,p:'ABC',e:'Modelo de relatório de andamento'},
+ C16:{n:'Demonstrativo de valor para clientes empresariais',h:2,p:'A',e:'Modelo de demonstrativo de valor'},
+ C17:{n:'Painel de gestão da banca',h:3,p:'A',e:'Painel com carteira, prazos e horas'},
+ C18:{n:'Pré-lançamento de horas',h:2,p:'BC',e:'Rotina de lançamento diário de horas'},
+ C19:{n:'Triagem de novos clientes',h:2,p:'AC',e:'Formulário e roteiro de triagem'},
+ C20:{n:'Conteúdo jurídico dentro das regras da OAB',h:2,p:'A',e:'Roteiro de produção de conteúdo'},
+ C21:{n:'Proposta e precificação com dados',h:2,p:'A',e:'Modelo de proposta e precificação'}
+};
+const TRILHAS=[{k:'A',n:'Sócios e gestão',foco:'Governança, risco e decisão'},{k:'B',n:'Advogados e associados',foco:'Prática segura no trabalho diário'},{k:'C',n:'Estagiários e apoio',foco:'Sigilo, conferência e rotina'}];
+const BASE=[
+ {id:'b1',t:'Citações não localizadas por peça (média)'},
+ {id:'b2',t:'Horas por tese de pesquisa'},
+ {id:'b3',t:'Prazos perdidos ou acionados em cima da hora no último trimestre'},
+ {id:'b4',t:'Peças com registro de conferência (%)'},
+ {id:'b5',t:'Retrabalho por peça (revisões pedidas pelo sócio)'}
+];
+const KEY='mapaIA.diagnostico.v1';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hoje=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmtData=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1]:''};
+const slug=s=>(String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''))||'escritorio';
+const idNum=id=>parseInt(String(id).replace(/\D/g,''),10)||0;
+
+const blank=()=>({v:1,step:1,exemplo:false,
+ perfil:{firma:'',participantes:'',data:hoje(),areas:[],pessoas:{socios:'',assoc:'',estag:'',apoio:''},ferramentas:[],quemUsa:'',usos:[]},
+ mat:{},notas:{},coment:{},casos:{},horas:{},baseline:{},fecho:{piloto:'',resp:'',proxima:'',obs:''}});
+function merge(a,b){ if(b==null||typeof b!=='object'||Array.isArray(b))return a; Object.keys(b).forEach(k=>{ if(a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k])&&typeof b[k]==='object'&&!Array.isArray(b[k])) merge(a[k],b[k]); else a[k]=b[k]; }); return a; }
+let canStore=true;
+function load(){ try{ const t=localStorage.getItem(KEY); return t?merge(blank(),JSON.parse(t)):null; }catch(e){ canStore=false; return null; } }
+let S=load()||blank();
+let savedAt=null, showAll=false;
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); canStore=true; savedAt=new Date(); }catch(e){ canStore=false; } setStatus(); }
+function setStatus(){
+  const el=$('status');
+  if(canStore&&savedAt){ el.textContent='Salvo neste navegador às '+String(savedAt.getHours()).padStart(2,'0')+':'+String(savedAt.getMinutes()).padStart(2,'0')+'.'; }
+  else if(!canStore){ el.textContent='Este navegador bloqueou o salvamento automático. Use Salvar respostas ao terminar.'; }
+  else { el.textContent='As respostas são salvas automaticamente neste navegador.'; }
+}
+const getPath=p=>p.split('.').reduce((o,k)=>o==null?o:o[k],S);
+function setPath(p,v){ const ks=p.split('.'); let o=S; for(let i=0;i<ks.length-1;i++){ if(o[ks[i]]==null||typeof o[ks[i]]!=='object')o[ks[i]]={}; o=o[ks[i]]; } o[ks[ks.length-1]]=v; }
+
+/* ---------- cálculo ---------- */
+const nota=p=>typeof S.notas[p]==='number'?S.notas[p]:0;
+function matScore(){ let s=0,a=0; MAT.forEach(m=>{ const v=S.mat[m.id]; if(typeof v==='boolean'){a++; if(v)s++;} }); return {s,a}; }
+const nivelDe=s=>s<=2?'Inicial':(s<=5?'Em estruturação':'Organizado');
+function calc(){
+  const rows=CASOS.map(c=>{
+    const sd=c.dr.reduce((a,p)=>a+nota(p),0);
+    const prio=3*c.i+sd-2*c.e;
+    const onda=c.e>=4?3:(c.e<=2&&c.i>=3?1:2);
+    return Object.assign({},c,{sd:sd,prio:prio,onda:onda,st:S.casos[c.id]||'ativo'});
+  });
+  rows.sort((a,b)=>((a.st==='ativo'?0:1)-(b.st==='ativo'?0:1))||(b.prio-a.prio)||(idNum(a.id)-idNum(b.id)));
+  const plano={1:[],2:[],3:[]}, fila={1:0,2:0,3:0};
+  rows.filter(r=>r.st==='ativo').forEach(r=>{ if(plano[r.onda].length<5)plano[r.onda].push(r); else fila[r.onda]++; });
+  return {rows:rows,plano:plano,fila:fila};
+}
+function topDores(){ return DORES.map(d=>({d:d,n:nota(d.id)})).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n||idNum(a.d.id)-idNum(b.d.id)); }
+const frNome=k=>(FRENTES[k]&&FRENTES[k].nome)||k;
+const casoNome=c=>c.id+' '+c.t;
+function planoModulos(C){
+  const m=matScore(); const core=['FUND','CONF','POL'];
+  if(m.a>0){ const nv=nivelDe(m.s); if(nv==='Inicial')core.push('INI'); if(nv==='Organizado')core.push('ORG'); }
+  const map=id=>id==='C02'?'CONF':((id==='C03'||id==='C04')?'POL':id);
+  const f1=[],f2=[];
+  C.plano[1].forEach(r=>{ const k=map(r.id); if(MOD[k]&&!core.includes(k)&&!f1.includes(k))f1.push(k); });
+  C.plano[2].slice(0,3).forEach(r=>{ const k=map(r.id); if(MOD[k]&&!core.includes(k)&&!f1.includes(k)&&!f2.includes(k))f2.push(k); });
+  return {core:core,f1:f1,f2:f2};
+}
+const hrs=k=>typeof S.horas[k]==='number'?S.horas[k]:MOD[k].h;
+const pessoasDe=k=>{ const p=S.perfil.pessoas; const n=x=>parseInt(x,10)||0; return k==='A'?n(p.socios):(k==='B'?n(p.assoc):n(p.estag)+n(p.apoio)); };
+function totais(P){
+  const out={}; let sala1=0,sala2=0;
+  TRILHAS.forEach(t=>{
+    const inc=k=>MOD[k].p.indexOf(t.k)>=0;
+    const f1=P.core.concat(P.f1).filter(inc).reduce((a,k)=>a+hrs(k),0);
+    const f2=P.f2.filter(inc).reduce((a,k)=>a+hrs(k),0);
+    const pe=pessoasDe(t.k); const turmas=pe>0?Math.ceil(pe/15):0;
+    out[t.k]={f1:f1,f2:f2,pe:pe,turmas:turmas};
+    sala1+=turmas*f1; sala2+=turmas*f2;
+  });
+  out.sala1=sala1; out.sala2=sala2; return out;
+}
+const fmtH=n=>(Math.round(n*10)/10).toString().replace('.',',')+' h';
+
+/* ---------- montagem dos painéis ---------- */
+function chips(path,items,type,name){
+  return '<div class="chips" role="group">'+items.map(it=>'<label class="chip"><input type="'+type+'" '+(type==='radio'?'name="'+name+'" data-bind="'+path+'"':'data-arr="'+path+'"')+' value="'+esc(it)+'"><span>'+esc(it)+'</span></label>').join('')+'</div>';
+}
+function panel1(){
+  return '<section class="panel" data-step="1" aria-labelledby="h1p">'+
+  '<div class="head"><h2 id="h1p">Perfil do escritório</h2><p class="lead">Dados básicos para dimensionar a capacitação. Não registre nomes de clientes nem dados de processos.</p></div>'+
+  '<div class="card"><div class="grid">'+
+   '<div class="field"><label for="f-firma">Escritório</label><input type="text" id="f-firma" data-bind="perfil.firma" placeholder="Nome do escritório" autocomplete="off"></div>'+
+   '<div class="field"><label for="f-part">Quem participa</label><input type="text" id="f-part" data-bind="perfil.participantes" placeholder="Nomes e cargos" autocomplete="off"></div>'+
+   '<div class="field"><label for="f-data">Data</label><input type="date" id="f-data" data-bind="perfil.data"></div>'+
+  '</div></div>'+
+  '<div class="card"><div class="field"><span class="lbl">Áreas de atuação</span>'+chips('perfil.areas',AREAS,'checkbox')+'</div></div>'+
+  '<div class="card"><span class="lbl">Pessoas na equipe</span><div class="grid">'+
+   '<div class="field"><label for="f-soc">Sócios</label><input type="number" min="0" inputmode="numeric" id="f-soc" data-bind="perfil.pessoas.socios"></div>'+
+   '<div class="field"><label for="f-ass">Advogados associados</label><input type="number" min="0" inputmode="numeric" id="f-ass" data-bind="perfil.pessoas.assoc"></div>'+
+   '<div class="field"><label for="f-est">Estagiários</label><input type="number" min="0" inputmode="numeric" id="f-est" data-bind="perfil.pessoas.estag"></div>'+
+   '<div class="field"><label for="f-apo">Apoio administrativo</label><input type="number" min="0" inputmode="numeric" id="f-apo" data-bind="perfil.pessoas.apoio"></div>'+
+  '</div></div>'+
+  '<div class="card"><div class="field"><span class="lbl">Ferramentas de IA em uso hoje</span>'+chips('perfil.ferramentas',FERR,'checkbox')+'</div>'+
+   '<div class="field"><span class="lbl">Quem usa IA no escritório</span>'+chips('perfil.quemUsa',QUEM,'radio','quemusa')+'</div>'+
+   '<div class="field"><span class="lbl">A IA é usada para</span>'+chips('perfil.usos',USOS,'checkbox')+'</div></div>'+
+  '<div class="pager"><span></span><button class="btn primary" type="button" data-go="1">Continuar</button></div></section>';
+}
+function panel2(){
+  const grupos=BLOCOS.map(b=>{
+    const qs=MAT.filter(m=>m.b===b).map(m=>
+      '<div class="mq" role="group" aria-labelledby="q-'+m.id+'"><p id="q-'+m.id+'">'+esc(m.t)+'</p>'+
+      '<div class="yn"><label><input type="radio" name="mat-'+m.id+'" data-mat="'+m.id+'" value="1"><span class="y">Sim</span></label>'+
+      '<label><input type="radio" name="mat-'+m.id+'" data-mat="'+m.id+'" value="0"><span class="n">Não</span></label></div></div>').join('');
+    return '<div class="card mgrp"><h3>'+esc(b)+'</h3><div>'+qs+'</div></div>';
+  }).join('');
+  return '<section class="panel" data-step="2" aria-labelledby="h2p">'+
+  '<div class="head"><h2 id="h2p">Maturidade no uso de IA</h2><p class="lead">Marque Sim somente quando a prática existe hoje e a equipe a segue. Na dúvida, marque Não.</p></div>'+
+  '<p class="small" id="mat-prog" aria-live="polite"></p>'+
+  '<div class="grid two">'+grupos+'</div>'+
+  '<div class="pager"><button class="btn" type="button" data-go="-1">Voltar</button><button class="btn primary" type="button" data-go="1">Continuar</button></div></section>';
+}
+function panel3(){
+  const cards=DORES.map(d=>
+    '<div class="card dor"><h3><span class="id">'+esc(d.id)+'</span>'+esc(d.n)+'</h3><p class="small">'+esc(d.d)+'</p>'+
+    '<div class="scale" role="radiogroup" aria-label="Nota para '+esc(d.n)+'">'+ESCALA.map((t,i)=>
+      '<label class="sc n'+i+'"><input type="radio" name="nota-'+d.id+'" data-nota="'+d.id+'" value="'+i+'"><span><b>'+i+'</b><small>'+t+'</small></span></label>').join('')+'</div>'+
+    '<div class="field"><label class="small" for="c-'+d.id+'">Nas palavras de quem falou (opcional)</label><input type="text" id="c-'+d.id+'" data-coment="'+d.id+'" autocomplete="off"></div></div>').join('');
+  return '<section class="panel" data-step="3" aria-labelledby="h3p">'+
+  '<div class="head"><h2 id="h3p">O que pesa na rotina</h2><p class="lead">Dê uma nota de 0 a 3 a cada dor. Se quiser, anote a fala de quem trouxe o exemplo.</p></div>'+
+  '<p class="small" id="dor-prog" aria-live="polite"></p>'+
+  '<div class="grid two">'+cards+'</div>'+
+  '<div class="pager"><button class="btn" type="button" data-go="-1">Voltar</button><button class="btn primary" type="button" data-go="1">Ver resultado</button></div></section>';
+}
+function panel4(){
+  return '<section class="panel" data-step="4" aria-labelledby="h4p"><div class="head"><h2 id="h4p">Resultado</h2><p class="lead">Mudar a nota de uma dor ou o status de um caso atualiza o resultado na hora.</p></div>'+
+  '<div id="res" class="panel"></div>'+
+  '<div class="pager"><button class="btn" type="button" data-go="-1">Voltar</button><button class="btn primary" type="button" data-go="1">Esboço de capacitação</button></div></section>';
+}
+function panel5(){
+  const base=BASE.map(b=>'<div class="field"><label for="bl-'+b.id+'">'+esc(b.t)+'</label><input type="text" id="bl-'+b.id+'" data-bind="baseline.'+b.id+'" placeholder="Valor atual ou “medir por 4 semanas”" autocomplete="off"></div>').join('');
+  return '<section class="panel" data-step="5" aria-labelledby="h5p"><div class="head"><h2 id="h5p">Esboço de capacitação</h2><p class="lead">Ponto de partida para a proposta. As horas de cada módulo podem ser ajustadas.</p></div>'+
+  '<div id="capac" class="panel"></div>'+
+  '<div class="card"><h3>Linha de base</h3><p class="small">O que o escritório sabe hoje. Sem esse número, não há como provar o ganho depois.</p><div class="grid">'+base+'</div></div>'+
+  '<div class="card"><h3>Próximos passos</h3><div class="grid">'+
+   '<div class="field"><label for="fe-piloto">Área piloto</label><select id="fe-piloto" data-bind="fecho.piloto"><option value="">Escolher</option><option>Trabalhista</option><option>Cível</option><option>Empresarial</option><option>Outra</option></select></div>'+
+   '<div class="field"><label for="fe-resp">Responsável no escritório</label><input type="text" id="fe-resp" data-bind="fecho.resp" autocomplete="off"></div>'+
+   '<div class="field"><label for="fe-prox">Próxima reunião</label><input type="text" id="fe-prox" data-bind="fecho.proxima" placeholder="Data e horário" autocomplete="off"></div>'+
+  '</div><div class="field"><label for="fe-obs">Observações</label><textarea id="fe-obs" data-bind="fecho.obs"></textarea></div></div>'+
+  '<div class="card"><h3>Levar o diagnóstico</h3><div class="tools"><button class="btn primary" type="button" data-act="pdf">Gerar PDF</button><button class="btn" type="button" data-act="json">Salvar respostas</button><button class="btn" type="button" data-act="copy">Copiar resumo</button></div></div>'+
+  '<div class="pager"><button class="btn" type="button" data-go="-1">Voltar</button><span></span></div></section>';
+}
+
+/* ---------- renderização dinâmica ---------- */
+function renderResultado(focusId){
+  const C=calc(), m=matScore(), nv=nivelDe(m.s), top=topDores();
+  const semNotas=Object.keys(S.notas).length===0;
+  const sumario='<div class="card summary">'+
+    '<div class="col"><h3>Maturidade</h3><p class="big">'+(m.a?esc(nv):'Sem resposta')+'</p><p>'+(m.a?m.s+' de 8 práticas existem hoje'+(m.a<8?' ('+m.a+' respondidas)':'')+'. '+esc(NIVEIS[nv]):'Responda o passo 2 para ver o nível.')+'</p></div>'+
+    '<div class="col"><h3>Dores que mais pesam</h3>'+(top.length?'<ul>'+top.slice(0,4).map(x=>'<li>'+esc(x.d.n)+' (nota '+x.n+')</li>').join('')+'</ul>':'<p>'+(semNotas?'Dê notas às dores no passo 3.':'Nenhuma dor com nota 2 ou 3.')+'</p>')+'</div>'+
+    '<div class="col"><h3>Para começar (Onda 1)</h3>'+(C.plano[1].length?'<ol>'+C.plano[1].slice(0,4).map(r=>'<li>'+esc(r.t)+'</li>').join('')+'</ol>':'<p>Nenhum caso ativo na Onda 1.</p>')+'</div></div>';
+  const barras='<div class="bars">'+BLOCOS.map(b=>{ const qs=MAT.filter(x=>x.b===b); const on=qs.filter(x=>S.mat[x.id]===true).length; return '<div class="bar"><span class="lbl">'+esc(b)+'</span><div class="seg" aria-hidden="true">'+qs.map((x,i)=>'<i class="'+(i<on?'on':'')+'"></i>').join('')+'</div><span class="small">'+on+' de '+qs.length+'</span></div>'; }).join('')+'</div>';
+  const lista=showAll?C.rows:C.rows.slice(0,10);
+  const linhas=lista.map((r,i)=>{
+    const pos=C.rows.indexOf(r)+1;
+    return '<tr class="'+(r.st==='ativo'?'':'off')+'"><td class="num">'+pos+'</td><td><span class="id">'+esc(r.id)+'</span> '+esc(r.t)+'</td><td>'+esc(frNome(r.fr))+'</td><td class="num">'+r.i+'</td><td class="num">'+r.e+'</td><td class="num">'+r.sd+'</td><td class="num"><b>'+r.prio+'</b></td><td class="num">'+r.onda+'</td>'+
+      '<td><select data-caso="'+r.id+'" aria-label="Status de '+esc(r.t)+'"><option value="ativo"'+(r.st==='ativo'?' selected':'')+'>Entra no plano</option><option value="feito"'+(r.st==='feito'?' selected':'')+'>Já fazemos</option><option value="nao"'+(r.st==='nao'?' selected':'')+'>Não se aplica</option></select></td></tr>';
+  }).join('');
+  const ondas=[[1,'Onda 1 · 0 a 90 dias'],[2,'Onda 2 · 3 a 6 meses'],[3,'Onda 3 · 6 a 12 meses']].map(o=>
+    '<div class="wave"><h3>'+o[1]+'</h3>'+(C.plano[o[0]].length?'<ol>'+C.plano[o[0]].map(r=>'<li>'+esc(casoNome(r))+'</li>').join('')+'</ol>':'<p class="small">Nenhum caso nesta onda.</p>')+(C.fila[o[0]]?'<p class="small">Na fila: '+C.fila[o[0]]+' caso'+(C.fila[o[0]]>1?'s':'')+'.</p>':'')+'</div>').join('');
+  $('res').innerHTML=sumario+
+    '<div class="card"><h3>Maturidade por bloco</h3>'+barras+'</div>'+
+    '<div class="panel"><h3>Ranking dos 21 casos</h3><p class="small">Prioridade = 3 × impacto + soma das notas das dores atacadas − 2 × esforço. Marque o que o escritório já faz ou não se aplica.</p>'+
+    '<div class="tblwrap"><table><thead><tr><th class="num">#</th><th>Caso</th><th>Frente</th><th class="num">Impacto</th><th class="num">Esforço</th><th class="num">Notas</th><th class="num">Prioridade</th><th class="num">Onda</th><th>Status</th></tr></thead><tbody>'+linhas+'</tbody></table></div>'+
+    '<div><button class="btn" type="button" data-act="toggleall">'+(showAll?'Mostrar só os 10 primeiros':'Mostrar os 21 casos')+'</button></div></div>'+
+    '<div class="panel"><h3>Plano em três ondas</h3><div class="waves">'+ondas+'</div><p class="small">Até 5 casos por onda, na ordem de prioridade. O restante fica na fila.</p></div>';
+  if(focusId){ const el=document.querySelector('[data-caso="'+focusId+'"]'); if(el)el.focus(); }
+}
+function renderCapac(){
+  const C=calc(), P=planoModulos(C), T=totais(P);
+  const tag=k=>P.core.indexOf(k)>=0?'Base':(P.f1.indexOf(k)>=0?'Fase 1':'Fase 2 (opcional)');
+  const ordem=P.core.concat(P.f1,P.f2);
+  const cards=TRILHAS.map(t=>{
+    const mods=ordem.filter(k=>MOD[k].p.indexOf(t.k)>=0);
+    const itens=mods.map(k=>'<div class="mod"><div><span>'+esc(MOD[k].n)+'</span><br><span class="meta">'+tag(k)+'</span></div><input type="number" min="0" max="12" step="0.5" aria-label="Horas: '+esc(MOD[k].n)+'" data-hora="'+k+'" value="'+hrs(k)+'"></div>').join('');
+    return '<div class="card trilha"><div><h3>Trilha '+t.k+' · '+esc(t.n)+'</h3><p class="small">'+esc(t.foco)+'</p></div><p class="small" data-pes="'+t.k+'"></p><div>'+itens+'</div><div class="tot"><span data-tot="'+t.k+'1"></span><span data-tot="'+t.k+'2"></span></div></div>';
+  }).join('');
+  const ents=[]; ordem.forEach(k=>{ if(ents.indexOf(MOD[k].e)<0)ents.push(MOD[k].e); });
+  const m=matScore();
+  $('capac').innerHTML=
+   '<div class="card"><h3>Ponto de partida</h3><p>'+(m.a?'Maturidade <b>'+esc(nivelDe(m.s))+'</b>. ':'')+'O módulo Base vale para todos. A Fase 1 segue a Onda 1 do plano. A Fase 2 é opcional e segue a Onda 2.'+(m.a?(nivelDe(m.s)==='Inicial'?' Como o nível é Inicial, entrou o módulo de primeiros passos.':(nivelDe(m.s)==='Organizado'?' Como o nível é Organizado, entrou o módulo de medição e auditoria.':'')):'')+'</p></div>'+
+   '<div class="grid">'+cards+'</div>'+
+   '<div class="card"><h3>Carga de entrega estimada</h3><p data-sala="1"></p><p data-sala="2"></p><p class="small">Considera turmas de até 15 pessoas por trilha. Horas de sala, sem preparação.</p></div>'+
+   '<div class="card"><h3>Formato sugerido</h3><ul class="plain"><li>Sessões de 2 a 3 horas, sobre casos reais da banca, anonimizados.</li><li>Exercícios de conferência ao vivo, com fonte oficial aberta.</li><li>Acompanhamento de 30 dias após cada fase, com leitura dos indicadores da linha de base.</li></ul></div>'+
+   '<div class="card"><h3>Entregas previstas</h3><ul class="plain">'+ents.map(e=>'<li>'+esc(e)+'</li>').join('')+'</ul></div>';
+  updateTotals();
+}
+function updateTotals(){
+  const C=calc(), P=planoModulos(C), T=totais(P);
+  TRILHAS.forEach(t=>{
+    const a=T[t.k];
+    const pe=document.querySelector('[data-pes="'+t.k+'"]'); if(pe)pe.textContent=a.pe>0?a.pe+' pessoa'+(a.pe>1?'s':'')+' · '+a.turmas+' turma'+(a.turmas>1?'s':''):'Número de pessoas não informado no perfil';
+    const t1=document.querySelector('[data-tot="'+t.k+'1"]'); if(t1)t1.textContent='Fase 1: '+fmtH(a.f1)+' por pessoa';
+    const t2=document.querySelector('[data-tot="'+t.k+'2"]'); if(t2)t2.textContent='Fase 2: +'+fmtH(a.f2);
+  });
+  const s1=document.querySelector('[data-sala="1"]'); if(s1)s1.innerHTML='Fase 1: <b>'+fmtH(T.sala1)+'</b> de sala';
+  const s2=document.querySelector('[data-sala="2"]'); if(s2)s2.innerHTML='Fase 2 (opcional): <b>'+fmtH(T.sala2)+'</b> de sala';
+}
+
+/* ---------- etapas e progresso ---------- */
+const STEPS=['Perfil','Maturidade','Dores','Resultado','Capacitação'];
+function progresso(i){
+  if(i===1)return S.perfil.firma?'Preenchido':'Em branco';
+  if(i===2)return matScore().a+' de 8';
+  if(i===3)return Object.keys(S.notas).length+' de 12';
+  if(i===4)return 'Calculado';
+  return 'Esboço';
+}
+function updateSteps(){
+  $('steps').innerHTML=STEPS.map((n,i)=>'<button type="button" class="step" data-step-go="'+(i+1)+'"'+(S.step===i+1?' aria-current="step"':'')+'><span class="nm">'+(i+1)+'. '+n+'</span><span class="pg">'+progresso(i+1)+'</span></button>').join('');
+  const mp=$('mat-prog'); if(mp)mp.textContent=matScore().a+' de 8 afirmações respondidas.';
+  const dp=$('dor-prog'); if(dp)dp.textContent=Object.keys(S.notas).length+' de 12 dores avaliadas.';
+  $('ex-banner').hidden=!S.exemplo;
+  const pristine=!S.exemplo&&!S.perfil.firma&&!Object.keys(S.notas).length&&!Object.keys(S.mat).length;
+  $('b-exemplo').hidden=!pristine;
+}
+function go(n){
+  n=Math.max(1,Math.min(5,n)); S.step=n;
+  document.querySelectorAll('.panel[data-step]').forEach(p=>{ p.hidden=(Number(p.dataset.step)!==n); });
+  if(n===4)renderResultado(); if(n===5)renderCapac();
+  updateSteps(); save();
+  try{ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }catch(e){}
+}
+
+/* ---------- ligação dos campos ---------- */
+function hydrate(){
+  document.querySelectorAll('[data-bind]').forEach(el=>{ const v=getPath(el.dataset.bind); if(el.type==='radio')el.checked=(v===el.value); else el.value=(v==null?'':v); });
+  document.querySelectorAll('[data-arr]').forEach(el=>{ const a=getPath(el.dataset.arr)||[]; el.checked=a.indexOf(el.value)>=0; });
+  document.querySelectorAll('[data-nota]').forEach(el=>{ el.checked=(S.notas[el.dataset.nota]===Number(el.value)); });
+  document.querySelectorAll('[data-mat]').forEach(el=>{ const v=S.mat[el.dataset.mat]; el.checked=(typeof v==='boolean')&&((v?'1':'0')===el.value); });
+  document.querySelectorAll('[data-coment]').forEach(el=>{ el.value=S.coment[el.dataset.coment]||''; });
+}
+function onEdit(e){
+  const t=e.target; if(!t||!t.dataset)return; let changed=false;
+  if(t.dataset.bind!==undefined){ if(t.type==='radio'&&!t.checked)return; setPath(t.dataset.bind,t.value); changed=true; }
+  else if(t.dataset.arr!==undefined){ const a=(getPath(t.dataset.arr)||[]).slice(); const i=a.indexOf(t.value); if(t.checked&&i<0)a.push(t.value); if(!t.checked&&i>=0)a.splice(i,1); setPath(t.dataset.arr,a); changed=true; }
+  else if(t.dataset.nota!==undefined){ if(t.checked){ S.notas[t.dataset.nota]=Number(t.value); changed=true; } }
+  else if(t.dataset.mat!==undefined){ if(t.checked){ S.mat[t.dataset.mat]=(t.value==='1'); changed=true; } }
+  else if(t.dataset.coment!==undefined){ S.coment[t.dataset.coment]=t.value; changed=true; }
+  else if(t.dataset.hora!==undefined){ const v=parseFloat(t.value); if(isFinite(v)&&v>=0)S.horas[t.dataset.hora]=v; else delete S.horas[t.dataset.hora]; changed=true; updateTotals(); }
+  else if(t.dataset.caso!==undefined){ S.casos[t.dataset.caso]=t.value; changed=true; renderResultado(t.dataset.caso); }
+  if(changed){ save(); updateSteps(); if(S.step===5&&t.dataset.bind&&t.dataset.bind.indexOf('perfil.pessoas')===0)updateTotals(); }
+}
+
+/* ---------- avisos ---------- */
+let toastT=null;
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>{el.hidden=true;},4500); }
+
+/* ---------- relatório, PDF e arquivos ---------- */
+function buildReport(){
+  const C=calc(), m=matScore(), nv=nivelDe(m.s), P=planoModulos(C), T=totais(P);
+  const pf=S.perfil, pes=pf.pessoas;
+  const li=a=>a&&a.length?esc(a.join(', ')):'Não informado';
+  const doresTab=DORES.map(d=>{ const n=S.notas[d.id]; return '<tr><td>'+esc(d.id)+'</td><td>'+esc(d.n)+(S.coment[d.id]?'<br><i>“'+esc(S.coment[d.id])+'”</i>':'')+'</td><td style="text-align:center">'+(typeof n==='number'?n+' · '+ESCALA[n]:'—')+'</td></tr>'; }).join('');
+  const rank=C.rows.slice(0,10).map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(casoNome(r))+'</td><td>'+esc(frNome(r.fr))+'</td><td style="text-align:center">'+r.prio+'</td><td style="text-align:center">'+(r.st==='ativo'?r.onda:'—')+'</td></tr>').join('');
+  const ond=[[1,'Onda 1 · 0 a 90 dias'],[2,'Onda 2 · 3 a 6 meses'],[3,'Onda 3 · 6 a 12 meses']].map(o=>'<div><h3>'+o[1]+'</h3>'+(C.plano[o[0]].length?'<ol>'+C.plano[o[0]].map(r=>'<li>'+esc(casoNome(r))+'</li>').join('')+'</ol>':'<p>Nenhum caso.</p>')+'</div>').join('');
+  const tr=TRILHAS.map(t=>{ const mods=P.core.concat(P.f1,P.f2).filter(k=>MOD[k].p.indexOf(t.k)>=0); const a=T[t.k];
+    return '<tr><td><b>'+t.k+' · '+esc(t.n)+'</b><br>'+(a.pe>0?a.pe+' pessoas, '+a.turmas+' turma'+(a.turmas>1?'s':''):'Pessoas não informadas')+'</td><td>'+mods.map(k=>esc(MOD[k].n)+' ('+fmtH(hrs(k))+(P.f2.indexOf(k)>=0?', opcional':'')+')').join('<br>')+'</td><td style="text-align:center">Fase 1: '+fmtH(a.f1)+'<br>Fase 2: +'+fmtH(a.f2)+'</td></tr>'; }).join('');
+  const bl=BASE.map(b=>'<tr><td>'+esc(b.t)+'</td><td>'+esc(S.baseline[b.id]||'Não informado')+'</td></tr>').join('');
+  const ents=[]; P.core.concat(P.f1,P.f2).forEach(k=>{ if(ents.indexOf(MOD[k].e)<0)ents.push(MOD[k].e); });
+  const top=topDores();
+  $('relatorio').innerHTML=
+   '<h1>Diagnóstico de IA jurídica</h1><p class="rp-meta"><b>'+esc(pf.firma||'Escritório não informado')+'</b> · '+esc(fmtData(pf.data))+(pf.participantes?' · Participantes: '+esc(pf.participantes):'')+'</p>'+
+   (S.exemplo?'<p class="rp-ex">Exemplo ilustrativo. As notas são hipóteses e não descrevem nenhum escritório.</p>':'')+
+   '<div class="rp-sec"><h2>Perfil</h2><table><tbody><tr><td width="28%"><b>Áreas</b></td><td>'+li(pf.areas)+'</td></tr><tr><td><b>Equipe</b></td><td>Sócios: '+esc(pes.socios||'—')+' · Associados: '+esc(pes.assoc||'—')+' · Estagiários: '+esc(pes.estag||'—')+' · Apoio: '+esc(pes.apoio||'—')+'</td></tr><tr><td><b>IA em uso</b></td><td>'+li(pf.ferramentas)+(pf.quemUsa?' · Quem usa: '+esc(pf.quemUsa):'')+'</td></tr><tr><td><b>Usos atuais</b></td><td>'+li(pf.usos)+'</td></tr></tbody></table></div>'+
+   '<div class="rp-sec"><h2>Maturidade</h2><p><b>'+(m.a?esc(nv)+'</b> · '+m.s+' de 8 práticas existem hoje. '+esc(NIVEIS[nv]):'Não respondida')+'</p>'+
+    '<table><tbody>'+MAT.map(x=>'<tr><td width="82%">'+esc(x.t)+'</td><td style="text-align:center">'+(typeof S.mat[x.id]==='boolean'?(S.mat[x.id]?'Sim':'Não'):'—')+'</td></tr>').join('')+'</tbody></table></div>'+
+   '<div class="rp-sec"><h2>Dores</h2>'+(top.length?'<p>Pesam mais: '+top.slice(0,5).map(x=>esc(x.d.n)+' ('+x.n+')').join('; ')+'.</p>':'')+'<table><thead><tr><th>ID</th><th>Dor</th><th>Nota</th></tr></thead><tbody>'+doresTab+'</tbody></table></div>'+
+   '<div class="rp-sec"><h2>Casos de maior prioridade</h2><table><thead><tr><th>#</th><th>Caso</th><th>Frente</th><th>Prioridade</th><th>Onda</th></tr></thead><tbody>'+rank+'</tbody></table></div>'+
+   '<div class="rp-sec"><h2>Plano em três ondas</h2><div class="rp-two">'+ond+'</div></div>'+
+   '<div class="rp-sec"><h2>Esboço de capacitação</h2><table><thead><tr><th>Trilha</th><th>Módulos e horas</th><th>Carga por pessoa</th></tr></thead><tbody>'+tr+'</tbody></table><p style="margin-top:6px">Carga de entrega estimada: Fase 1 = '+fmtH(T.sala1)+' de sala; Fase 2 (opcional) = '+fmtH(T.sala2)+'. Turmas de até 15 pessoas.</p><h3>Entregas previstas</h3><ul>'+ents.map(e=>'<li>'+esc(e)+'</li>').join('')+'</ul></div>'+
+   '<div class="rp-sec"><h2>Linha de base</h2><table><tbody>'+bl+'</tbody></table></div>'+
+   '<div class="rp-sec"><h2>Próximos passos</h2><p>Área piloto: <b>'+esc(S.fecho.piloto||'a definir')+'</b> · Responsável: '+esc(S.fecho.resp||'a definir')+' · Próxima reunião: '+esc(S.fecho.proxima||'a definir')+'</p>'+(S.fecho.obs?'<p>'+esc(S.fecho.obs).replace(/\n/g,'<br>')+'</p>':'')+'</div>'+
+   '<p class="rp-foot">Diagnóstico declaratório, feito a partir das respostas dos sócios. Impacto e esforço dos casos são estimativas iniciais. Prioridade = 3 × impacto + soma das notas das dores atacadas − 2 × esforço.</p>';
+}
+let dlP=null;
+function getDownloads(){
+  if(!window.claude||typeof window.claude.use!=='function')return Promise.resolve(null);
+  if(!dlP)dlP=Promise.resolve().then(()=>window.claude.use('downloads')).catch(()=>null);
+  return dlP;
+}
+const nomeArq=ext=>'diagnostico-ia-'+slug(S.perfil.firma)+'-'+(S.perfil.data||hoje())+'.'+ext;
+async function entregar(filename,data,mime){
+  const dl=await getDownloads();
+  if(dl){ try{ await dl.save({filename:filename,data:data}); toast('Arquivo pronto.'); }catch(e){ if(e&&e.code==='declined')return; toast('Não foi possível salvar o arquivo aqui.'); } return; }
+  if(window.claude){ toast('Salvar arquivos não está disponível nesta visualização.'); return; }
+  const url=URL.createObjectURL(data instanceof Blob?data:new Blob([data],{type:mime||'application/octet-stream'}));
+  const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000); toast('Arquivo baixado.');
+}
+function estadoJSON(){
+  const C=calc(), m=matScore();
+  return JSON.stringify({app:'mapa-ia-escritorios',versao:'0.1',exportadoEm:new Date().toISOString(),estado:S,
+    resultado:{maturidade:{pontos:m.s,respondidas:m.a,nivel:m.a?nivelDe(m.s):null},ranking:C.rows.map(r=>({id:r.id,prioridade:r.prio,onda:r.onda,status:r.st})),plano:{onda1:C.plano[1].map(r=>r.id),onda2:C.plano[2].map(r=>r.id),onda3:C.plano[3].map(r=>r.id)}}},null,2);
+}
+async function gerarPDF(){
+  buildReport();
+  const dl=await getDownloads();
+  if(!dl){
+    if(window.claude){ toast('O PDF não está disponível nesta visualização. Abra o arquivo .html no navegador.'); return; }
+    try{ window.print(); }catch(e){ toast('Use Ctrl+P (ou Cmd+P) e escolha Salvar como PDF.'); }
+    return;
+  }
+  if(!window.html2pdf){ toast('A biblioteca de PDF não carregou. Verifique a conexão e tente de novo.'); return; }
+  toast('Gerando o PDF…');
+  try{
+    const blob=await window.html2pdf().set({margin:[10,10,12,10],image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#FFFFFF',windowWidth:794},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['.rp-sec','tr']}}).from($('relatorio')).outputPdf('blob');
+    await dl.save({filename:nomeArq('pdf'),data:blob}); toast('PDF pronto.');
+  }catch(e){ if(e&&e.code==='declined')return; toast('Não foi possível gerar o PDF aqui. Baixe o arquivo .html e use Imprimir.'); }
+}
+function resumoTexto(){
+  const C=calc(), m=matScore(), top=topDores();
+  const L=['Diagnóstico de IA jurídica · '+(S.perfil.firma||'Escritório não informado')+' · '+fmtData(S.perfil.data)];
+  L.push('Maturidade: '+(m.a?nivelDe(m.s)+' ('+m.s+' de 8)':'não respondida'));
+  L.push('Dores que mais pesam: '+(top.length?top.slice(0,5).map(x=>x.d.n+' ('+x.n+')').join('; '):'sem notas 2 ou 3'));
+  [1,2,3].forEach(o=>L.push('Onda '+o+': '+(C.plano[o].length?C.plano[o].map(r=>casoNome(r)).join('; '):'nenhum caso')));
+  L.push('Área piloto: '+(S.fecho.piloto||'a definir'));
+  return L.join('\n');
+}
+function copiar(){
+  const txt=resumoTexto();
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:0'; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); toast(ok?'Resumo copiado.':'Não foi possível copiar. Use Salvar respostas.'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('Resumo copiado.'),fallback); } else fallback();
+}
+function abrirArquivo(file){
+  if(!file)return;
+  const rd=new FileReader();
+  rd.onload=()=>{ try{ const j=JSON.parse(String(rd.result)); if(!j||j.app!=='mapa-ia-escritorios'||typeof j.estado!=='object')throw new Error('x'); S=merge(blank(),j.estado); hydrate(); save(); go(S.step||1); toast('Respostas carregadas.'); }catch(e){ toast('Este arquivo não é um diagnóstico salvo por esta ferramenta.'); } };
+  rd.onerror=()=>toast('Não foi possível ler o arquivo.');
+  rd.readAsText(file);
+}
+function exemplo(){
+  S=blank(); S.exemplo=true;
+  S.perfil.firma='Escritório de exemplo'; S.perfil.participantes='Sócios (exemplo)';
+  S.perfil.areas=['Cível','Trabalhista','Empresarial']; S.perfil.pessoas={socios:'3',assoc:'6',estag:'5',apoio:'4'};
+  S.perfil.ferramentas=['ChatGPT']; S.perfil.quemUsa='Poucos'; S.perfil.usos=['Pesquisa jurídica','Minutas e peças'];
+  ['m1','m2','m3','m4','m5','m6','m7','m8'].forEach((k,i)=>{ S.mat[k]=(i===2); });
+  const n={P1:3,P2:3,P3:2,P4:3,P5:2,P6:1,P7:2,P8:3,P9:3,P10:1,P11:0,P12:1}; Object.keys(n).forEach(k=>{S.notas[k]=n[k];});
+  hydrate(); save(); go(4);
+}
+let novoT=null;
+function novo(){
+  const b=$('b-novo');
+  if(!novoT){ b.textContent='Apagar tudo? Clique de novo'; b.classList.add('warn'); novoT=setTimeout(()=>{ novoT=null; b.textContent='Novo diagnóstico'; b.classList.remove('warn'); },5000); return; }
+  clearTimeout(novoT); novoT=null; b.textContent='Novo diagnóstico'; b.classList.remove('warn');
+  S=blank(); hydrate(); save(); go(1); toast('Diagnóstico novo, em branco.');
+}
+
+/* ---------- início ---------- */
+$('panels').innerHTML=panel1()+panel2()+panel3()+panel4()+panel5();
+document.addEventListener('input',onEdit); document.addEventListener('change',onEdit);
+document.addEventListener('click',e=>{
+  const t=e.target.closest?e.target.closest('button'):null; if(!t)return;
+  if(t.dataset.go)go(S.step+Number(t.dataset.go));
+  else if(t.dataset.stepGo)go(Number(t.dataset.stepGo));
+  else if(t.dataset.act==='toggleall'){ showAll=!showAll; renderResultado(); }
+  else if(t.dataset.act==='pdf')gerarPDF();
+  else if(t.dataset.act==='json')entregar(nomeArq('json'),estadoJSON(),'application/json');
+  else if(t.dataset.act==='copy')copiar();
+});
+$('b-pdf').addEventListener('click',gerarPDF);
+$('b-json').addEventListener('click',()=>entregar(nomeArq('json'),estadoJSON(),'application/json'));
+$('b-abrir').addEventListener('click',()=>$('f-abrir').click());
+$('f-abrir').addEventListener('change',e=>{ abrirArquivo(e.target.files&&e.target.files[0]); e.target.value=''; });
+$('b-exemplo').addEventListener('click',exemplo);
+$('b-novo').addEventListener('click',novo);
+window.addEventListener('beforeprint',buildReport);
+hydrate(); setStatus(); go(S.step||1);
+})();
+</script>
+
+</body></html>
